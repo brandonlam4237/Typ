@@ -15,9 +15,9 @@ function SettingsBar() {
           <div>words</div>
         </div>
         <div className="settings__divider" />
-        <div>15</div>
-        <div>30</div>
-        <div>60</div>
+        <div className="settings__num">15</div>
+        <div className="settings__num">30</div>
+        <div className="settings__num">60</div>
       </div>
     </main>
   );

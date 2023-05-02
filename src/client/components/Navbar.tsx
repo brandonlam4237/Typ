@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import user from "../assets/account.svg";
-
 import "../scss/navbar.scss";
 
 function Navbar() {

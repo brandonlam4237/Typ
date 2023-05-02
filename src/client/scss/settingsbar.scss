@@ -23,23 +23,12 @@
     cursor: pointer;
   }
 
-  &__opt:hover {
-    color: white;
-
-    .settings__icon {
-      filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(116deg)
-        brightness(103%) contrast(101%);
-    }
-  }
-
   &__opt-2 {
     gap: 0.5rem;
   }
 
   &__icon {
     height: 1.8rem;
-    filter: invert(46%) sepia(9%) saturate(6%) hue-rotate(34deg) brightness(96%)
-      contrast(91%);
   }
 
   &__divider {
@@ -48,11 +37,12 @@
     height: 2rem;
   }
 
-  &__num {
-    cursor: pointer;
+  &__nums {
+    display: flex;
+    gap: 2rem;
   }
 
-  &__num:hover {
-    color: white;
+  &__num {
+    cursor: pointer;
   }
 }

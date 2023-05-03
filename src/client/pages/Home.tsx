@@ -14,6 +14,8 @@ function Home() {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       console.log(e.key);
+      const cursor = document.querySelector(".game__cursor") as HTMLElement;
+
       if (e.key.length === 1 && e.key !== " ") {
         if (!gameInProgress) setGameInProgress(true);
       }
@@ -45,10 +47,21 @@ function Home() {
             ?.firstChild as HTMLElement;
           console.log(nextLetter);
           nextLetter.classList.add("current");
+
+          // move cursor
+          cursor.style.left =
+            `${currLetter?.getBoundingClientRect().right}` + "px";
+
+          // correct char entered
         } else {
           const nextLetter = currLetter?.nextSibling as HTMLElement;
           nextLetter.classList.add("current");
+
+          // move cursor
+          cursor.style.left =
+            `${nextLetter?.getBoundingClientRect().left}` + "px";
         }
+
         currLetter?.classList.remove("current");
       }
 
@@ -92,13 +105,26 @@ function Home() {
         }
 
         // remove correct class from previous characters
-        else if (prevLetter?.classList.contains("correct")) {
+        if (prevLetter?.classList.contains("correct")) {
           console.log("removing", prevLetter);
           prevLetter.classList.remove("correct");
           setTextIndex(textIndex - 1);
           currLetter?.classList.remove("current");
           prevLetter.classList.add("current");
         }
+
+        /*
+        // go back to previous word
+        if (!prevLetter) {
+          const prevWordLastLetter = currLetter?.parentElement?.previousSibling
+            ?.lastChild?.previousSibling as HTMLElement;
+          console.log(prevWordLastLetter);
+          currLetter?.classList.remove("current");
+          prevWordLastLetter?.classList.remove("correct");
+          prevWordLastLetter?.classList.add("current");
+          setTextIndex(textIndex - 1);
+        }
+        */
       }
     };
 

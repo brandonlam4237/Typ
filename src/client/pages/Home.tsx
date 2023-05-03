@@ -34,7 +34,7 @@ function Home() {
 
         // letter match, change color to white
         const currLetter = document.querySelector<HTMLElement>(".current");
-        if (currLetter) currLetter.style.color = "white";
+        currLetter?.classList.add("correct");
 
         // update text index to next letter in prompt
         setTextIndex(textIndex + 1);
@@ -83,7 +83,22 @@ function Home() {
 
       // backspace key pressed
       if (e.key === "Backspace") {
-        // allow deletes but only on current word
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const prevLetter = currLetter?.previousSibling as HTMLElement;
+
+        // delete inccorect characters
+        if (prevLetter?.classList.contains("incorrect")) {
+          prevLetter?.remove();
+        }
+
+        // remove correct class from previous characters
+        else if (prevLetter?.classList.contains("correct")) {
+          console.log("removing", prevLetter);
+          prevLetter.classList.remove("correct");
+          setTextIndex(textIndex - 1);
+          currLetter?.classList.remove("current");
+          prevLetter.classList.add("current");
+        }
       }
     };
 

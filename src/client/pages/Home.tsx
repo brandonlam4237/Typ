@@ -19,7 +19,7 @@ function Home() {
       }
 
       // handle incorrect letter
-      if (e.key !== text[textIndex] && e.key.length === 1) {
+      if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const incorrectLetter = document.createElement("span");
         incorrectLetter.textContent = e.key;
@@ -52,10 +52,38 @@ function Home() {
         currLetter?.classList.remove("current");
       }
 
-      // space key pressed
-      if (e.key === text[textIndex] && e.key === " ") {
-        console.log(e.key, "matches", text[textIndex]);
+      // space key pressed incorrectly
+      if (e.key === " " && e.key !== text[textIndex]) {
+        // skip to next word
+        let count = 0;
+        let index = textIndex;
+        while (text[index] !== " ") {
+          console.log(text[index]);
+          count += 1;
+          index += 1;
+          if (text[index] !== " ") {
+            const currLetter = document.querySelector<HTMLElement>(".current");
+            const nextLetter = currLetter?.nextSibling as HTMLElement;
+            nextLetter.classList.add("current");
+            currLetter?.classList.remove("current");
+          }
+        }
+        console.log("curr char:", text[textIndex + count + 1]);
+        setTextIndex(textIndex + count + 1);
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const nextLetter = currLetter?.parentElement?.nextSibling
+          ?.firstChild as HTMLElement;
+        nextLetter.classList.add("current");
+        currLetter?.classList.remove("current");
+      }
+
+      if (e.key === " " && e.key === text[textIndex]) {
         setTextIndex(textIndex + 1);
+      }
+
+      // backspace key pressed
+      if (e.key === "Backspace") {
+        // allow deletes but only on current word
       }
     };
 

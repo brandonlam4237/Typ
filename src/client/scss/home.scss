@@ -19,12 +19,17 @@
     padding-left: 5rem;
     padding-right: 5rem;
 
+    &__container {
+      position: relative;
+    }
+
     &__words {
       letter-spacing: 1px;
       font-size: 1.2rem;
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      margin-left: 0.2rem;
     }
 
     &__timer {
@@ -32,6 +37,7 @@
       color: $red;
       font-weight: bold;
       margin-bottom: -1.5rem;
+      margin-left: 0.2rem;
     }
 
     &__reset-container {
@@ -51,5 +57,25 @@
       filter: invert(44%) sepia(71%) saturate(5029%) hue-rotate(338deg)
         brightness(109%) contrast(90%);
     }
+
+    &__cursor {
+      background-color: $red;
+      height: 28px;
+      width: 2px;
+      position: absolute;
+      animation: blink 1s infinite;
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

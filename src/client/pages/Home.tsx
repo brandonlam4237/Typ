@@ -13,12 +13,20 @@ function Home() {
       <SettingsBar />
       <div className="game">
         <div className="game__timer">53</div>
-        <div className="game__words">
-          {textArr.map((word) => {
-            return <div>{word}</div>;
-          })}
+        <div className="game__container">
+          <div className="game__cursor"></div>
+          <div className="game__words">
+            {textArr.map((word) => {
+              return (
+                <div className="game__word">
+                  {word.split("").map((letter) => {
+                    return <span className="game__letter">{letter}</span>;
+                  })}{" "}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="game__cursor"></div>
         <div className="game__reset-container">
           <img className="game__reset" src={reset} />
         </div>

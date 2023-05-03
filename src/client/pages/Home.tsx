@@ -17,6 +17,17 @@ function Home() {
       if (e.key.length === 1 && e.key !== " ") {
         if (!gameInProgress) setGameInProgress(true);
       }
+
+      // handle incorrect letter
+      if (e.key !== text[textIndex] && e.key.length === 1) {
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const incorrectLetter = document.createElement("span");
+        incorrectLetter.textContent = e.key;
+        incorrectLetter.classList.add("game__letter");
+        incorrectLetter.classList.add("incorrect");
+        currLetter?.parentNode?.insertBefore(incorrectLetter, currLetter);
+      }
+
       // check if key press matches next letter in prompt
       if (e.key === text[textIndex] && e.key !== " ") {
         console.log(e.key, "matches", text[textIndex]);

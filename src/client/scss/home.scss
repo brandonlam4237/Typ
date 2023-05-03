@@ -36,6 +36,10 @@
       .current {
         //color: white;
       }
+
+      .incorrect {
+        color: $red;
+      }
     }
 
     &__timer {

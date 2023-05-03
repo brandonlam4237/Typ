@@ -28,6 +28,10 @@ function Home() {
         incorrectLetter.classList.add("game__letter");
         incorrectLetter.classList.add("incorrect");
         currLetter?.parentNode?.insertBefore(incorrectLetter, currLetter);
+
+        // move cursor
+        cursor.style.left =
+          `${currLetter?.getBoundingClientRect().left}` + "px";
       }
 
       // check if key press matches next letter in prompt
@@ -88,10 +92,19 @@ function Home() {
           ?.firstChild as HTMLElement;
         nextLetter.classList.add("current");
         currLetter?.classList.remove("current");
+        // move cursor
+        cursor.style.left =
+          `${nextLetter?.getBoundingClientRect().left}` + "px";
       }
 
+      // space key pressed correctly
       if (e.key === " " && e.key === text[textIndex]) {
         setTextIndex(textIndex + 1);
+        const currLetter = document.querySelector<HTMLElement>(".current");
+
+        // move cursor to next word
+        cursor.style.left =
+          `${currLetter?.getBoundingClientRect().left}` + "px";
       }
 
       // backspace key pressed
@@ -102,6 +115,8 @@ function Home() {
         // delete inccorect characters
         if (prevLetter?.classList.contains("incorrect")) {
           prevLetter?.remove();
+          cursor.style.left =
+            `${currLetter?.getBoundingClientRect().left}` + "px";
         }
 
         // remove correct class from previous characters
@@ -111,6 +126,10 @@ function Home() {
           setTextIndex(textIndex - 1);
           currLetter?.classList.remove("current");
           prevLetter.classList.add("current");
+
+          // move cursor
+          cursor.style.left =
+            `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
 
         /*

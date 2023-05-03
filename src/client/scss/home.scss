@@ -32,6 +32,12 @@
       margin-left: 0.1rem;
     }
 
+    &__word {
+      .current {
+        //color: white;
+      }
+    }
+
     &__timer {
       font-size: 1.5rem;
       color: $red;

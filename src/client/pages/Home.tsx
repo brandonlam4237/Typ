@@ -12,12 +12,37 @@ function Home() {
   const [textIndex, setTextIndex] = useState(0);
 
   useEffect(() => {
-    const handleKey = (e: any) => {
+    const handleKey = (e: KeyboardEvent) => {
       console.log(e.key);
       if (e.key.length === 1 && e.key !== " ") {
         if (!gameInProgress) setGameInProgress(true);
       }
-      if (e.key === text[textIndex]) {
+      // check if key press matches next letter in prompt
+      if (e.key === text[textIndex] && e.key !== " ") {
+        console.log(e.key, "matches", text[textIndex]);
+
+        // letter match, change color to white
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        if (currLetter) currLetter.style.color = "white";
+
+        // update text index to next letter in prompt
+        setTextIndex(textIndex + 1);
+
+        // handle if next char is a space e.g. need to go to next word
+        if (text[textIndex + 1] === " ") {
+          const nextLetter = currLetter?.parentElement?.nextSibling
+            ?.firstChild as HTMLElement;
+          console.log(nextLetter);
+          nextLetter.classList.add("current");
+        } else {
+          const nextLetter = currLetter?.nextSibling as HTMLElement;
+          nextLetter.classList.add("current");
+        }
+        currLetter?.classList.remove("current");
+      }
+
+      // space key pressed
+      if (e.key === text[textIndex] && e.key === " ") {
         console.log(e.key, "matches", text[textIndex]);
         setTextIndex(textIndex + 1);
       }
@@ -46,11 +71,18 @@ function Home() {
               return (
                 <div className="game__word" key={i}>
                   {word.split("").map((letter, j) => {
-                    return (
-                      <span className="game__letter" key={j}>
-                        {letter}
-                      </span>
-                    );
+                    if (j === 0 && i === 0)
+                      return (
+                        <span className="game__letter current" key={j}>
+                          {letter}
+                        </span>
+                      );
+                    else
+                      return (
+                        <span className="game__letter" key={j}>
+                          {letter}
+                        </span>
+                      );
                   })}{" "}
                 </div>
               );

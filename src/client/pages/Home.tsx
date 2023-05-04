@@ -136,12 +136,17 @@ function Home() {
 
         // go back to previous word
         else if (!prevLetter) {
+          console.log("test test");
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
           currLetter?.classList.remove("current");
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");
-          setTextIndex(textIndex - 2);
+
+          if (text[textIndex] === " ") {
+            setTextIndex(textIndex - 1); // if at the end of a word
+          } else setTextIndex(textIndex - 2); // at the start of next word going back
+
           // need to handle backspace when there is no prev letter in the word / prev is a space
           cursor.style.left =
             `${prevWordLastLetter?.getBoundingClientRect().left}` + "px";
@@ -176,14 +181,14 @@ function Home() {
         }
       }
 
-      /*
       if (true) {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const nextLetter = currLetter?.parentElement?.nextSibling
           ?.firstChild as HTMLElement;
-        console.log(currLetter);
-        console.log(nextLetter);
-      } */
+        console.log("curr", currLetter);
+        console.log("next", nextLetter);
+        console.log("*******************");
+      }
     };
 
     document.addEventListener("keydown", handleKey);

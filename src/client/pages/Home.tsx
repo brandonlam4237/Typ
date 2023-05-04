@@ -93,6 +93,23 @@ function Home() {
         cursor.style.left =
           `${nextLetter?.getBoundingClientRect().left}` + "px";
         cursor.style.top = `${nextLetter?.getBoundingClientRect().top}` + "px";
+
+        // calculate the distance from the top using timer and current word
+        const timer = document.querySelector(".game__timer");
+        const timerY = timer?.getBoundingClientRect().top;
+        if (nextLetter && timerY) {
+          const space = nextLetter?.getBoundingClientRect().top - timerY;
+
+          // scroll words up a row if needed (past second row)
+          if (space > 90) {
+            console.log("spacing");
+            const words = document.querySelector(".game__words") as HTMLElement;
+            const top: any = words.style.marginTop.slice(0, -2);
+            words.style.marginTop = `${top - 35}` + "px";
+            cursor.style.top =
+              `${nextLetter?.getBoundingClientRect().top}` + "px";
+          }
+        }
       }
 
       // space key pressed correctly

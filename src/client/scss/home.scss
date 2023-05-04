@@ -20,7 +20,9 @@
     padding-right: 5rem;
 
     &__container {
-      //position: relative;
+      //border: solid red;
+      height: 6.5rem;
+      overflow: hidden;
     }
 
     &__words {
@@ -30,6 +32,7 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-left: 0.1rem;
+      margin-top: 0px;
     }
 
     &__word {

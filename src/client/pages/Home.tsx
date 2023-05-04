@@ -5,7 +5,7 @@ import reset from "../assets/reset.svg";
 
 function Home() {
   const text: string =
-    "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur";
+    "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur";
   const textArr: string[] = text.split(" ");
 
   const [gameInProgress, setGameInProgress] = useState(false);
@@ -13,7 +13,6 @@ function Home() {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      console.log(e.key);
       const cursor = document.querySelector(".game__cursor") as HTMLElement;
 
       if (e.key.length === 1 && e.key !== " ") {
@@ -37,8 +36,6 @@ function Home() {
 
       // check if key press matches next letter in prompt
       if (e.key === text[textIndex] && e.key !== " ") {
-        console.log(e.key, "matches", text[textIndex]);
-
         // letter match, change color to white
         const currLetter = document.querySelector<HTMLElement>(".current");
         currLetter?.classList.add("correct");
@@ -50,12 +47,13 @@ function Home() {
         if (text[textIndex + 1] === " ") {
           const nextLetter = currLetter?.parentElement?.nextSibling
             ?.firstChild as HTMLElement;
-          console.log(nextLetter);
           nextLetter.classList.add("current");
 
           // move cursor
           cursor.style.left =
             `${currLetter?.getBoundingClientRect().right}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
 
           // correct char entered
         } else {
@@ -76,7 +74,6 @@ function Home() {
         let count = 0;
         let index = textIndex;
         while (text[index] !== " ") {
-          console.log(text[index]);
           count += 1;
           index += 1;
           if (text[index] !== " ") {
@@ -86,7 +83,6 @@ function Home() {
             currLetter?.classList.remove("current");
           }
         }
-        console.log("curr char:", text[textIndex + count + 1]);
         setTextIndex(textIndex + count + 1);
         const currLetter = document.querySelector<HTMLElement>(".current");
         const nextLetter = currLetter?.parentElement?.nextSibling
@@ -127,8 +123,7 @@ function Home() {
         }
 
         // remove correct class from previous characters
-        if (prevLetter?.classList.contains("correct")) {
-          console.log("removing", prevLetter);
+        else if (prevLetter?.classList.contains("correct")) {
           prevLetter.classList.remove("correct");
           setTextIndex(textIndex - 1);
           currLetter?.classList.remove("current");
@@ -139,19 +134,56 @@ function Home() {
             `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
 
-        /*
         // go back to previous word
-        if (!prevLetter) {
+        else if (!prevLetter) {
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
-          console.log(prevWordLastLetter);
           currLetter?.classList.remove("current");
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");
+          setTextIndex(textIndex - 2);
+          // need to handle backspace when there is no prev letter in the word / prev is a space
+          cursor.style.left =
+            `${prevWordLastLetter?.getBoundingClientRect().left}` + "px";
+        } else {
+          console.log("else");
           setTextIndex(textIndex - 1);
+          currLetter?.classList.remove("current");
+          prevLetter.classList.add("current");
+          cursor.style.left =
+            `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
-        */
       }
+      const currLetter = document.querySelector<HTMLElement>(".current");
+
+      // calculate the distance from the top using timer and current word
+      const timer = document.querySelector(".game__timer");
+      const timerY = timer?.getBoundingClientRect().top;
+      if (currLetter && timerY) {
+        const space = currLetter?.getBoundingClientRect().top - timerY;
+
+        // scroll words up a row if needed (past second row)
+        if (space > 90) {
+          const words = document.querySelector(".game__words") as HTMLElement;
+          const top: any = words.style.marginTop.slice(0, -2);
+          words.style.marginTop = `${top - 35}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
+          ///// something with left
+          // goes to the right place but needs a space need to keep cursor in line
+          //cursor.style.left =
+          //  `${currLetter?.getBoundingClientRect().left}` + "px";
+        }
+      }
+
+      /*
+      if (true) {
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const nextLetter = currLetter?.parentElement?.nextSibling
+          ?.firstChild as HTMLElement;
+        console.log(currLetter);
+        console.log(nextLetter);
+      } */
     };
 
     document.addEventListener("keydown", handleKey);

@@ -122,7 +122,17 @@ function Home() {
           `${currLetter?.getBoundingClientRect().left}` + "px";
         const nextLetter = currLetter?.parentElement?.nextSibling
           ?.firstChild as HTMLElement;
-        cursor.style.top = `${nextLetter?.getBoundingClientRect().top}` + "px";
+
+        // check if word is not the last word in the line
+        if (nextLetter && currLetter) {
+          if (
+            nextLetter.getBoundingClientRect().top <=
+            currLetter.getBoundingClientRect().top
+          ) {
+            cursor.style.top =
+              `${nextLetter.getBoundingClientRect().top}` + "px";
+          }
+        }
 
         // calculate the distance from the top using timer and current word
         const timer = document.querySelector(".game__timer");
@@ -137,10 +147,6 @@ function Home() {
             words.style.marginTop = `${top - 35}` + "px";
             cursor.style.top =
               `${currLetter?.getBoundingClientRect().top}` + "px";
-            ///// something with left
-            // goes to the right place but needs a space need to keep cursor in line
-            //cursor.style.left =
-            //  `${currLetter?.getBoundingClientRect().left}` + "px";
           }
         }
       }

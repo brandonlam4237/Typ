@@ -32,6 +32,7 @@ function Home() {
         // move cursor
         cursor.style.left =
           `${currLetter?.getBoundingClientRect().left}` + "px";
+        cursor.style.top = `${currLetter?.getBoundingClientRect().top}` + "px";
       }
 
       // check if key press matches next letter in prompt
@@ -70,7 +71,7 @@ function Home() {
       }
 
       // space key pressed incorrectly
-      if (e.key === " " && e.key !== text[textIndex]) {
+      if (e.key === " " && e.key !== text[textIndex] && gameInProgress) {
         // skip to next word
         let count = 0;
         let index = textIndex;
@@ -95,6 +96,7 @@ function Home() {
         // move cursor
         cursor.style.left =
           `${nextLetter?.getBoundingClientRect().left}` + "px";
+        cursor.style.top = `${nextLetter?.getBoundingClientRect().top}` + "px";
       }
 
       // space key pressed correctly
@@ -105,6 +107,9 @@ function Home() {
         // move cursor to next word
         cursor.style.left =
           `${currLetter?.getBoundingClientRect().left}` + "px";
+        const nextLetter = currLetter?.parentElement?.nextSibling
+          ?.firstChild as HTMLElement;
+        cursor.style.top = `${nextLetter?.getBoundingClientRect().top}` + "px";
       }
 
       // backspace key pressed
@@ -117,6 +122,8 @@ function Home() {
           prevLetter?.remove();
           cursor.style.left =
             `${currLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
         }
 
         // remove correct class from previous characters

@@ -106,6 +106,26 @@ function Home() {
         const nextLetter = currLetter?.parentElement?.nextSibling
           ?.firstChild as HTMLElement;
         cursor.style.top = `${nextLetter?.getBoundingClientRect().top}` + "px";
+
+        // calculate the distance from the top using timer and current word
+        const timer = document.querySelector(".game__timer");
+        const timerY = timer?.getBoundingClientRect().top;
+        if (currLetter && timerY) {
+          const space = currLetter?.getBoundingClientRect().top - timerY;
+
+          // scroll words up a row if needed (past second row)
+          if (space > 90) {
+            const words = document.querySelector(".game__words") as HTMLElement;
+            const top: any = words.style.marginTop.slice(0, -2);
+            words.style.marginTop = `${top - 35}` + "px";
+            cursor.style.top =
+              `${currLetter?.getBoundingClientRect().top}` + "px";
+            ///// something with left
+            // goes to the right place but needs a space need to keep cursor in line
+            //cursor.style.left =
+            //  `${currLetter?.getBoundingClientRect().left}` + "px";
+          }
+        }
       }
 
       // backspace key pressed
@@ -157,27 +177,6 @@ function Home() {
           prevLetter.classList.add("current");
           cursor.style.left =
             `${prevLetter?.getBoundingClientRect().left}` + "px";
-        }
-      }
-      const currLetter = document.querySelector<HTMLElement>(".current");
-
-      // calculate the distance from the top using timer and current word
-      const timer = document.querySelector(".game__timer");
-      const timerY = timer?.getBoundingClientRect().top;
-      if (currLetter && timerY) {
-        const space = currLetter?.getBoundingClientRect().top - timerY;
-
-        // scroll words up a row if needed (past second row)
-        if (space > 90) {
-          const words = document.querySelector(".game__words") as HTMLElement;
-          const top: any = words.style.marginTop.slice(0, -2);
-          words.style.marginTop = `${top - 35}` + "px";
-          cursor.style.top =
-            `${currLetter?.getBoundingClientRect().top}` + "px";
-          ///// something with left
-          // goes to the right place but needs a space need to keep cursor in line
-          //cursor.style.left =
-          //  `${currLetter?.getBoundingClientRect().left}` + "px";
         }
       }
 

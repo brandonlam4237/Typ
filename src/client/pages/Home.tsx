@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import SettingsBar from "../components/SettingsBar";
 import "../scss/home.scss";
 import reset from "../assets/reset.svg";
+import { text } from "stream/consumers";
 
 function Home() {
-  const text: string =
+  let sampleText: string =
     "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur";
-  const textArr: string[] = text.split(" ");
+  let text2: string =
+    "amet consectetur adipiscing elit ut aliquam purus sit amet viverra maecenas accumsan lacus vel facilisis sagittis eu volutpat odio facilisis mauris sit porttitor leo a diam sollicitudin ultricies lacus sed turpis tincidunt id. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi suscipit tellus mauris a diam maecenas sed enim ut maecenas pharetra convallis posuere morbi leo urna molestie at elementum iaculis eu non diam phasellus vestibulum lorem sed at risus viverra adipiscing at senectus et netus et malesuada fames ac turpis egestas urna molestie at elementum eu vitae congue eu consequat ac felis donec et urna cursus eget nunc scelerisque viverra mauris in aliquam sem cursus mattis molestie a iaculis at erat pellentesque adipiscing elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue";
 
+  const [text, setText] = useState(sampleText);
+  const [textArr, setTextArr] = useState(text.split(" "));
   const [gameInProgress, setGameInProgress] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const [wordsCorrect, setWordsCorrect] = useState(0);
@@ -232,7 +236,6 @@ function Home() {
         }
       }
 
-      /*
       if (true) {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const nextLetter = currLetter?.parentElement?.nextSibling
@@ -240,7 +243,7 @@ function Home() {
         console.log("curr", currLetter);
         console.log("next", nextLetter);
         console.log("*******************");
-      } */
+      }
     };
 
     document.addEventListener("keydown", handleKey);
@@ -266,6 +269,40 @@ function Home() {
     }
     //console.log("incorrect:", incorrectCount);
     return incorrectCount;
+  }
+
+  function resetGame() {
+    setGameInProgress(false);
+    setTextIndex(0);
+    setWordsCompleted(0);
+    setWordsCorrect(0);
+
+    // clean up old class modifiers
+    const currLetter = document.querySelector(".current");
+    currLetter?.classList.remove("current");
+    const letters = document.querySelectorAll(".game__letter");
+    letters.forEach((ele) => {
+      ele.classList.remove("correct");
+      ele.classList.remove("incorrect");
+      ele.classList.remove("complete");
+    });
+
+    // fetch new text
+    setTextArr(text2.split(" "));
+    setText(text2);
+    console.log(text);
+    const newCurrLetter = document.querySelector(".game__letter");
+    newCurrLetter?.classList.add("current");
+    console.log(newCurrLetter);
+
+    // reset cursor position
+    const cursor = document.querySelector(".game__cursor") as HTMLElement;
+    cursor.style.left = `${newCurrLetter?.getBoundingClientRect().left}` + "px";
+    cursor.style.top = `${newCurrLetter?.getBoundingClientRect().top}` + "px";
+
+    //reset the margins
+    const words = document.querySelector(".game__words") as HTMLElement;
+    words.style.marginTop = 0 + "px";
   }
 
   return (
@@ -302,7 +339,7 @@ function Home() {
           </div>
         </div>
         <div className="game__reset-container">
-          <img className="game__reset" src={reset} />
+          <img className="game__reset" src={reset} onClick={resetGame} />
           <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
         </div>
       </div>

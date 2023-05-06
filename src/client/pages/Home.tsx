@@ -193,6 +193,8 @@ function Home() {
           // need to handle backspace when there is no prev letter in the word / prev is a space
           cursor.style.left =
             `${prevWordLastLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${prevWordLastLetter?.getBoundingClientRect().top}` + "px";
         } else {
           console.log("else");
           setTextIndex(textIndex - 1);

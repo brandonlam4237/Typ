@@ -283,7 +283,10 @@ function Home() {
     const letters = document.querySelectorAll(".game__letter");
     letters.forEach((ele) => {
       ele.classList.remove("correct");
-      ele.classList.remove("incorrect");
+      if (ele.classList.contains("incorrect")) {
+        ele.classList.remove("incorrect");
+        ele.remove();
+      }
       ele.classList.remove("complete");
     });
 

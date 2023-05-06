@@ -15,9 +15,9 @@ function Home() {
     const handleKey = (e: KeyboardEvent) => {
       const cursor = document.querySelector(".game__cursor") as HTMLElement;
 
-      if (e.key.length === 1 && e.key !== " ") {
-        if (!gameInProgress) setGameInProgress(true);
-      }
+      // start the game if key press is correct
+      if (!gameInProgress && e.key !== text[0]) return;
+      if (!gameInProgress) setGameInProgress(true);
 
       // handle incorrect letter
       if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
@@ -152,7 +152,7 @@ function Home() {
       }
 
       // backspace key pressed
-      if (e.key === "Backspace") {
+      if (e.key === "Backspace" && textIndex !== 0) {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const prevLetter = currLetter?.previousSibling as HTMLElement;
 

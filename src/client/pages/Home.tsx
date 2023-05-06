@@ -297,8 +297,8 @@ function Home() {
 
     // reset cursor position
     const cursor = document.querySelector(".game__cursor") as HTMLElement;
-    cursor.style.left = `${newCurrLetter?.getBoundingClientRect().left}` + "px";
-    cursor.style.top = `${newCurrLetter?.getBoundingClientRect().top}` + "px";
+    cursor.style.left = "auto";
+    cursor.style.top = "auto";
 
     //reset the margins
     const words = document.querySelector(".game__words") as HTMLElement;

@@ -3,6 +3,17 @@ import time from "../assets/time.svg";
 import words from "../assets/words.svg";
 import { useState } from "react";
 
+interface settingsProps {
+  timeSelected: boolean;
+  wordsSelected: boolean;
+  timeAmount: number;
+  wordAmount: number;
+  setTimeSelected: Function;
+  setWordsSelected: Function;
+  setTimeAmount: Function;
+  setWordAmount: Function;
+}
+
 const lightGray = "#757575";
 const red = "#f34949";
 const white = "#FFFFFF";
@@ -13,11 +24,17 @@ const svgRed =
 const svgWhite =
   "invert(100%) sepia(100%) saturate(0%) hue-rotate(116deg) brightness(103%) contrast(101%)";
 
-function SettingsBar() {
-  const [timeSelected, setTimeSelected] = useState(true);
-  const [wordsSelected, setWordsSelected] = useState(false);
-  const [timeAmount, setTimeAmount] = useState(15);
-  const [wordAmount, setWordAmount] = useState(25);
+function SettingsBar(props: settingsProps) {
+  const {
+    timeSelected,
+    wordsSelected,
+    timeAmount,
+    wordAmount,
+    setTimeSelected,
+    setWordsSelected,
+    setTimeAmount,
+    setWordAmount,
+  } = props;
 
   const [timeColor, setTimeColor] = useState({ color: red });
   const [svgTimeColor, setSvgTimeColor] = useState({ filter: svgRed });

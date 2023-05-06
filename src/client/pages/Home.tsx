@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SettingsBar from "../components/SettingsBar";
 import "../scss/home.scss";
 import reset from "../assets/reset.svg";
-import { text } from "stream/consumers";
+import Timer from "../components/Timer";
 
 function Home() {
   let sampleText: string =
@@ -16,6 +16,11 @@ function Home() {
   const [textIndex, setTextIndex] = useState(0);
   const [wordsCorrect, setWordsCorrect] = useState(0);
   const [wordsCompleted, setWordsCompleted] = useState(0);
+
+  const [timeSelected, setTimeSelected] = useState(true);
+  const [wordsSelected, setWordsSelected] = useState(false);
+  const [timeAmount, setTimeAmount] = useState(15);
+  const [wordAmount, setWordAmount] = useState(25);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -307,11 +312,26 @@ function Home() {
 
   return (
     <main className="home">
-      <SettingsBar />
+      <SettingsBar
+        timeSelected={timeSelected}
+        wordsSelected={wordsSelected}
+        timeAmount={timeAmount}
+        wordAmount={wordAmount}
+        setTimeSelected={setTimeSelected}
+        setWordsSelected={setWordsSelected}
+        setTimeAmount={setTimeAmount}
+        setWordAmount={setWordAmount}
+      />
       <div className="game">
-        {gameInProgress && <div className="game__timer">53</div>}
+        {gameInProgress && (
+          <div className="game__timer">
+            <Timer timeAmount={timeAmount} />
+          </div>
+        )}
         {!gameInProgress && (
-          <div className="game__timer game__timer--inactive">53</div>
+          <div className="game__timer game__timer--inactive">
+            <Timer timeAmount={timeAmount} />
+          </div>
         )}
         <div className="game__container">
           <div className="game__cursor"></div>

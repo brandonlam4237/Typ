@@ -10,6 +10,8 @@ function Home() {
 
   const [gameInProgress, setGameInProgress] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
+  const [wordsCorrect, setWordsCorrect] = useState(0);
+  const [wordsCompleted, setWordsCompleted] = useState(0);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -45,6 +47,11 @@ function Home() {
 
         // handle if next char is a space e.g. need to go to next word
         if (text[textIndex + 1] === " ") {
+          setWordsCompleted(wordsCompleted + 1);
+          if (!incorrectCount()) {
+            setWordsCorrect(wordsCorrect + 1);
+            currLetter?.classList.add("complete");
+          }
           const nextLetter = currLetter?.parentElement?.nextSibling
             ?.firstChild as HTMLElement;
           nextLetter.classList.add("current");
@@ -70,6 +77,7 @@ function Home() {
 
       // space key pressed incorrectly
       if (e.key === " " && e.key !== text[textIndex] && gameInProgress) {
+        setWordsCompleted(wordsCompleted + 1);
         // skip to next word
         let count = 0;
         let index = textIndex;
@@ -156,7 +164,7 @@ function Home() {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const prevLetter = currLetter?.previousSibling as HTMLElement;
 
-        // delete inccorect characters
+        // delete incorrect characters
         if (prevLetter?.classList.contains("incorrect")) {
           prevLetter?.remove();
           cursor.style.left =
@@ -179,12 +187,18 @@ function Home() {
 
         // go back to previous word
         else if (!prevLetter) {
-          console.log("test test");
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
           currLetter?.classList.remove("current");
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");
+
+          setWordsCompleted(wordsCompleted - 1);
+          // need to check if previous word was completed correctly
+          if (prevWordLastLetter.classList.contains("complete")) {
+            setWordsCorrect(wordsCorrect - 1);
+            prevWordLastLetter.classList.remove("complete");
+          }
 
           if (text[textIndex] === " ") {
             setTextIndex(textIndex - 1); // if at the end of a word
@@ -223,6 +237,23 @@ function Home() {
     };
   }, [textIndex]);
 
+  // return the number of mistakes in current word
+  function incorrectCount() {
+    const currLetter = document.querySelector<HTMLElement>(".current");
+    const parent = currLetter?.parentNode;
+    let incorrectCount = 0;
+    if (parent?.children) {
+      for (let i of parent?.children) {
+        console.log(i);
+        if (i.classList.contains("incorrect")) {
+          incorrectCount += 1;
+        }
+      }
+    }
+    console.log("incorrect:", incorrectCount);
+    return incorrectCount;
+  }
+
   return (
     <main className="home">
       <SettingsBar />
@@ -258,6 +289,7 @@ function Home() {
         </div>
         <div className="game__reset-container">
           <img className="game__reset" src={reset} />
+          <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
         </div>
       </div>
     </main>

@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 import SettingsBar from "../components/SettingsBar";
 import "../scss/home.scss";
 import reset from "../assets/reset.svg";
+import { text } from "stream/consumers";
 
 function Home() {
-  const text: string =
+  let sampleText: string =
     "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur";
-  const textArr: string[] = text.split(" ");
+  let text2: string =
+    "amet consectetur adipiscing elit ut aliquam purus sit amet viverra maecenas accumsan lacus vel facilisis sagittis eu volutpat odio facilisis mauris sit porttitor leo a diam sollicitudin ultricies lacus sed turpis tincidunt id. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi suscipit tellus mauris a diam maecenas sed enim ut maecenas pharetra convallis posuere morbi leo urna molestie at elementum iaculis eu non diam phasellus vestibulum lorem sed at risus viverra adipiscing at senectus et netus et malesuada fames ac turpis egestas urna molestie at elementum eu vitae congue eu consequat ac felis donec et urna cursus eget nunc scelerisque viverra mauris in aliquam sem cursus mattis molestie a iaculis at erat pellentesque adipiscing elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue";
 
+  const [text, setText] = useState(sampleText);
+  const [textArr, setTextArr] = useState(text.split(" "));
   const [gameInProgress, setGameInProgress] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
+  const [wordsCorrect, setWordsCorrect] = useState(0);
+  const [wordsCompleted, setWordsCompleted] = useState(0);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       const cursor = document.querySelector(".game__cursor") as HTMLElement;
 
-      if (e.key.length === 1 && e.key !== " ") {
-        if (!gameInProgress) setGameInProgress(true);
-      }
+      // start the game if key press is correct
+      if (!gameInProgress && e.key !== text[0]) return;
+      if (!gameInProgress) setGameInProgress(true);
 
       // handle incorrect letter
       if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
@@ -45,6 +51,11 @@ function Home() {
 
         // handle if next char is a space e.g. need to go to next word
         if (text[textIndex + 1] === " ") {
+          setWordsCompleted(wordsCompleted + 1);
+          if (!incorrectCount()) {
+            setWordsCorrect(wordsCorrect + 1);
+            currLetter?.classList.add("complete");
+          }
           const nextLetter = currLetter?.parentElement?.nextSibling
             ?.firstChild as HTMLElement;
           nextLetter.classList.add("current");
@@ -70,6 +81,7 @@ function Home() {
 
       // space key pressed incorrectly
       if (e.key === " " && e.key !== text[textIndex] && gameInProgress) {
+        setWordsCompleted(wordsCompleted + 1);
         // skip to next word
         let count = 0;
         let index = textIndex;
@@ -151,12 +163,26 @@ function Home() {
         }
       }
 
+      // prevent some backspacing bugs
+      if (e.key === "Backspace" && textIndex === 0) {
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const prevLetter = currLetter?.previousSibling as HTMLElement;
+        // delete incorrect characters
+        if (prevLetter?.classList.contains("incorrect")) {
+          prevLetter?.remove();
+          cursor.style.left =
+            `${currLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
+        }
+      }
+
       // backspace key pressed
-      if (e.key === "Backspace") {
+      if (e.key === "Backspace" && textIndex !== 0) {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const prevLetter = currLetter?.previousSibling as HTMLElement;
 
-        // delete inccorect characters
+        // delete incorrect characters
         if (prevLetter?.classList.contains("incorrect")) {
           prevLetter?.remove();
           cursor.style.left =
@@ -179,12 +205,18 @@ function Home() {
 
         // go back to previous word
         else if (!prevLetter) {
-          console.log("test test");
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
           currLetter?.classList.remove("current");
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");
+
+          setWordsCompleted(wordsCompleted - 1);
+          // need to check if previous word was completed correctly
+          if (prevWordLastLetter.classList.contains("complete")) {
+            setWordsCorrect(wordsCorrect - 1);
+            prevWordLastLetter.classList.remove("complete");
+          }
 
           if (text[textIndex] === " ") {
             setTextIndex(textIndex - 1); // if at the end of a word
@@ -193,8 +225,9 @@ function Home() {
           // need to handle backspace when there is no prev letter in the word / prev is a space
           cursor.style.left =
             `${prevWordLastLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${prevWordLastLetter?.getBoundingClientRect().top}` + "px";
         } else {
-          console.log("else");
           setTextIndex(textIndex - 1);
           currLetter?.classList.remove("current");
           prevLetter.classList.add("current");
@@ -220,6 +253,57 @@ function Home() {
       document.removeEventListener("keydown", handleKey);
     };
   }, [textIndex]);
+
+  // return the number of mistakes in current word
+  function incorrectCount() {
+    const currLetter = document.querySelector<HTMLElement>(".current");
+    const parent = currLetter?.parentNode;
+    let incorrectCount = 0;
+    if (parent?.children) {
+      for (let i of parent?.children) {
+        //console.log(i);
+        if (i.classList.contains("incorrect")) {
+          incorrectCount += 1;
+        }
+      }
+    }
+    //console.log("incorrect:", incorrectCount);
+    return incorrectCount;
+  }
+
+  function resetGame() {
+    setGameInProgress(false);
+    setTextIndex(0);
+    setWordsCompleted(0);
+    setWordsCorrect(0);
+
+    // clean up old class modifiers
+    const currLetter = document.querySelector(".current");
+    currLetter?.classList.remove("current");
+    const letters = document.querySelectorAll(".game__letter");
+    letters.forEach((ele) => {
+      ele.classList.remove("correct");
+      ele.classList.remove("incorrect");
+      ele.classList.remove("complete");
+    });
+
+    // fetch new text
+    setTextArr(text2.split(" "));
+    setText(text2);
+    console.log(text);
+    const newCurrLetter = document.querySelector(".game__letter");
+    newCurrLetter?.classList.add("current");
+    console.log(newCurrLetter);
+
+    // reset cursor position
+    const cursor = document.querySelector(".game__cursor") as HTMLElement;
+    cursor.style.left = "auto";
+    cursor.style.top = "auto";
+
+    //reset the margins
+    const words = document.querySelector(".game__words") as HTMLElement;
+    words.style.marginTop = 0 + "px";
+  }
 
   return (
     <main className="home">
@@ -255,7 +339,8 @@ function Home() {
           </div>
         </div>
         <div className="game__reset-container">
-          <img className="game__reset" src={reset} />
+          <img className="game__reset" src={reset} onClick={resetGame} />
+          <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
         </div>
       </div>
     </main>

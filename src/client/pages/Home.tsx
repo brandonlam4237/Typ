@@ -159,6 +159,20 @@ function Home() {
         }
       }
 
+      // prevent some backspacing bugs
+      if (e.key === "Backspace" && textIndex === 0) {
+        const currLetter = document.querySelector<HTMLElement>(".current");
+        const prevLetter = currLetter?.previousSibling as HTMLElement;
+        // delete incorrect characters
+        if (prevLetter?.classList.contains("incorrect")) {
+          prevLetter?.remove();
+          cursor.style.left =
+            `${currLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
+        }
+      }
+
       // backspace key pressed
       if (e.key === "Backspace" && textIndex !== 0) {
         const currLetter = document.querySelector<HTMLElement>(".current");
@@ -210,7 +224,6 @@ function Home() {
           cursor.style.top =
             `${prevWordLastLetter?.getBoundingClientRect().top}` + "px";
         } else {
-          console.log("else");
           setTextIndex(textIndex - 1);
           currLetter?.classList.remove("current");
           prevLetter.classList.add("current");
@@ -219,6 +232,7 @@ function Home() {
         }
       }
 
+      /*
       if (true) {
         const currLetter = document.querySelector<HTMLElement>(".current");
         const nextLetter = currLetter?.parentElement?.nextSibling
@@ -226,7 +240,7 @@ function Home() {
         console.log("curr", currLetter);
         console.log("next", nextLetter);
         console.log("*******************");
-      }
+      } */
     };
 
     document.addEventListener("keydown", handleKey);
@@ -244,13 +258,13 @@ function Home() {
     let incorrectCount = 0;
     if (parent?.children) {
       for (let i of parent?.children) {
-        console.log(i);
+        //console.log(i);
         if (i.classList.contains("incorrect")) {
           incorrectCount += 1;
         }
       }
     }
-    console.log("incorrect:", incorrectCount);
+    //console.log("incorrect:", incorrectCount);
     return incorrectCount;
   }
 

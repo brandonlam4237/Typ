@@ -12,6 +12,7 @@ interface settingsProps {
   setWordsSelected: Function;
   setTimeAmount: Function;
   setWordAmount: Function;
+  gameInProgress: boolean;
 }
 
 const lightGray = "#757575";
@@ -34,6 +35,7 @@ function SettingsBar(props: settingsProps) {
     setWordsSelected,
     setTimeAmount,
     setWordAmount,
+    gameInProgress,
   } = props;
 
   const [timeColor, setTimeColor] = useState(
@@ -76,15 +78,17 @@ function SettingsBar(props: settingsProps) {
         <div
           className="settings__opt"
           onClick={() => {
-            setTimeColor({ color: red });
-            setSvgTimeColor({ filter: svgRed });
-            setWordsColor({ color: lightGray });
-            setSvgWordsColor({ filter: svgLightGray });
-            setTimeSelected(true);
-            setWordsSelected(false);
+            if (!gameInProgress) {
+              setTimeColor({ color: red });
+              setSvgTimeColor({ filter: svgRed });
+              setWordsColor({ color: lightGray });
+              setSvgWordsColor({ filter: svgLightGray });
+              setTimeSelected(true);
+              setWordsSelected(false);
+            }
           }}
           onMouseEnter={() => {
-            if (!timeSelected) {
+            if (!timeSelected && !gameInProgress) {
               setTimeColor({ color: white });
               setSvgTimeColor({ filter: svgWhite });
             }
@@ -105,15 +109,17 @@ function SettingsBar(props: settingsProps) {
         <div
           className="settings__opt settings__opt-2"
           onClick={() => {
-            setTimeColor({ color: lightGray });
-            setSvgTimeColor({ filter: svgLightGray });
-            setWordsColor({ color: red });
-            setSvgWordsColor({ filter: svgRed });
-            setTimeSelected(false);
-            setWordsSelected(true);
+            if (!gameInProgress) {
+              setTimeColor({ color: lightGray });
+              setSvgTimeColor({ filter: svgLightGray });
+              setWordsColor({ color: red });
+              setSvgWordsColor({ filter: svgRed });
+              setTimeSelected(false);
+              setWordsSelected(true);
+            }
           }}
           onMouseEnter={() => {
-            if (!wordsSelected) {
+            if (!wordsSelected && !gameInProgress) {
               setWordsColor({ color: white });
               setSvgWordsColor({ filter: svgWhite });
             }
@@ -138,13 +144,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={time15Color}
               onClick={() => {
-                setTimeAmount(15);
-                setTime15Color({ color: red });
-                setTime30Color({ color: lightGray });
-                setTime60Color({ color: lightGray });
+                if (!gameInProgress) {
+                  setTimeAmount(15);
+                  setTime15Color({ color: red });
+                  setTime30Color({ color: lightGray });
+                  setTime60Color({ color: lightGray });
+                }
               }}
               onMouseEnter={() => {
-                if (timeAmount !== 15) setTime15Color({ color: white });
+                if (timeAmount !== 15 && !gameInProgress)
+                  setTime15Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (timeAmount === 15) setTime15Color({ color: red });
@@ -157,13 +166,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={time30Color}
               onClick={() => {
-                setTimeAmount(30);
-                setTime15Color({ color: lightGray });
-                setTime30Color({ color: red });
-                setTime60Color({ color: lightGray });
+                if (!gameInProgress) {
+                  setTimeAmount(30);
+                  setTime15Color({ color: lightGray });
+                  setTime30Color({ color: red });
+                  setTime60Color({ color: lightGray });
+                }
               }}
               onMouseEnter={() => {
-                if (timeAmount !== 30) setTime30Color({ color: white });
+                if (timeAmount !== 30 && !gameInProgress)
+                  setTime30Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (timeAmount === 30) setTime30Color({ color: red });
@@ -176,13 +188,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={time60Color}
               onClick={() => {
-                setTimeAmount(60);
-                setTime15Color({ color: lightGray });
-                setTime30Color({ color: lightGray });
-                setTime60Color({ color: red });
+                if (!gameInProgress) {
+                  setTimeAmount(60);
+                  setTime15Color({ color: lightGray });
+                  setTime30Color({ color: lightGray });
+                  setTime60Color({ color: red });
+                }
               }}
               onMouseEnter={() => {
-                if (timeAmount !== 60) setTime60Color({ color: white });
+                if (timeAmount !== 60 && !gameInProgress)
+                  setTime60Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (timeAmount === 60) setTime60Color({ color: red });
@@ -199,13 +214,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={words10Color}
               onClick={() => {
-                setWordAmount(10);
-                setWords10Color({ color: red });
-                setWords25Color({ color: lightGray });
-                setWords50Color({ color: lightGray });
+                if (!gameInProgress) {
+                  setWordAmount(10);
+                  setWords10Color({ color: red });
+                  setWords25Color({ color: lightGray });
+                  setWords50Color({ color: lightGray });
+                }
               }}
               onMouseEnter={() => {
-                if (wordAmount !== 10) setWords10Color({ color: white });
+                if (wordAmount !== 10 && !gameInProgress)
+                  setWords10Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (wordAmount === 10) setWords10Color({ color: red });
@@ -218,13 +236,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={words25Color}
               onClick={() => {
-                setWordAmount(25);
-                setWords10Color({ color: lightGray });
-                setWords25Color({ color: red });
-                setWords50Color({ color: lightGray });
+                if (!gameInProgress) {
+                  setWordAmount(25);
+                  setWords10Color({ color: lightGray });
+                  setWords25Color({ color: red });
+                  setWords50Color({ color: lightGray });
+                }
               }}
               onMouseEnter={() => {
-                if (wordAmount !== 25) setWords25Color({ color: white });
+                if (wordAmount !== 25 && !gameInProgress)
+                  setWords25Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (wordAmount === 25) setWords25Color({ color: red });
@@ -237,13 +258,16 @@ function SettingsBar(props: settingsProps) {
               className="settings__num"
               style={words50Color}
               onClick={() => {
-                setWordAmount(50);
-                setWords10Color({ color: lightGray });
-                setWords25Color({ color: lightGray });
-                setWords50Color({ color: red });
+                if (!gameInProgress) {
+                  setWordAmount(50);
+                  setWords10Color({ color: lightGray });
+                  setWords25Color({ color: lightGray });
+                  setWords50Color({ color: red });
+                }
               }}
               onMouseEnter={() => {
-                if (wordAmount !== 50) setWords50Color({ color: white });
+                if (wordAmount !== 50 && !gameInProgress)
+                  setWords50Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (wordAmount === 50) setWords50Color({ color: red });

@@ -26,6 +26,7 @@ function Home() {
 
   const [gameEnd, setGameEnd] = useState(false);
   const [wordsTime, setWordsTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -268,6 +269,7 @@ function Home() {
 
   useEffect(() => {
     if (wordsCompleted === wordAmount) {
+      setEndTime(wordsTime);
       setGameEnd(true);
     }
   }, [wordsCompleted]);
@@ -307,6 +309,7 @@ function Home() {
     setWordsCorrect(0);
     setMistakes(0);
     setWordsTime(0);
+    setEndTime(0);
 
     // clean up old class modifiers
     const currLetter = document.querySelector(".current");
@@ -412,7 +415,7 @@ function Home() {
           mistakes={mistakes}
           letterCount={textIndex}
           reset={resetGame}
-          wordsTime={wordsTime}
+          endTime={endTime}
         />
       )}
     </main>

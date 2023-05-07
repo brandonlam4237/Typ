@@ -11,7 +11,7 @@ interface resultsProps {
   timeAmount: number;
   wordAmount: number;
   reset: Function;
-  wordsTime: number;
+  endTime: number;
 }
 
 function Results(props: resultsProps) {
@@ -25,7 +25,7 @@ function Results(props: resultsProps) {
     timeAmount,
     wordAmount,
     reset,
-    wordsTime,
+    endTime,
   } = props;
   return (
     <main className="results">
@@ -39,7 +39,7 @@ function Results(props: resultsProps) {
           )}
           {wordsSelected && (
             <p className="container__field-val">{`${Math.floor(
-              (wordsCorrect / wordsTime) * 60
+              (wordsCorrect / endTime) * 60
             )}`}</p>
           )}
         </div>
@@ -64,7 +64,7 @@ function Results(props: resultsProps) {
             <p className="container__field-val">{`${timeAmount}s`}</p>
           )}
           {wordsSelected && (
-            <p className="container__field-val">{`${wordsTime}s`}</p>
+            <p className="container__field-val">{`${endTime}s`}</p>
           )}
         </div>
         <div className="container__reset-container">

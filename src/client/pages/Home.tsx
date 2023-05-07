@@ -23,7 +23,7 @@ function Home() {
   const [timeAmount, setTimeAmount] = useState(15);
   const [wordAmount, setWordAmount] = useState(25);
 
-  const [gameEnd, setGameEnd] = useState(true);
+  const [gameEnd, setGameEnd] = useState(false);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {

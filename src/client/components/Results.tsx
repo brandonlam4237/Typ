@@ -26,19 +26,37 @@ function Results(props: resultsProps) {
       <div className="container">
         <div className="container__field">
           <p>WPM</p>
-          <p className="container__field-val">87</p>
+          {timeSelected && (
+            <p className="container__field-val">{`${Math.floor(
+              (wordsCorrect / timeAmount) * 60
+            )}`}</p>
+          )}
+          {wordsSelected && <p className="container__field-val">53</p>}
         </div>
         <div className="container__field">
           <p>Test</p>
-          <p className="container__field-val">time 30s</p>
+          {timeSelected && (
+            <p className="container__field-val">{`time ${timeAmount}s`}</p>
+          )}
+          {wordsSelected && (
+            <p className="container__field-val">{`words ${wordAmount}`}</p>
+          )}
         </div>
         <div className="container__field">
           <p>Acc</p>
-          <p className="container__field-val">93%</p>
+          {timeSelected && (
+            <p className="container__field-val">{`${Math.floor(
+              (wordsCorrect / wordsCompleted) * 100
+            )}%`}</p>
+          )}
+          {wordsSelected && <p className="container__field-val">10</p>}
         </div>
         <div className="container__field">
           <p>Time</p>
-          <p className="container__field-val">30s</p>
+          {timeSelected && (
+            <p className="container__field-val">{`${timeAmount}s`}</p>
+          )}
+          {wordsSelected && <p className="container__field-val">10</p>}
         </div>
         <div className="container__reset-container">
           <img

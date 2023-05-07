@@ -3,6 +3,7 @@ import SettingsBar from "../components/SettingsBar";
 import "../scss/home.scss";
 import reset from "../assets/reset.svg";
 import Timer from "../components/Timer";
+import Results from "../components/Results";
 
 function Home() {
   let sampleText: string =
@@ -21,6 +22,8 @@ function Home() {
   const [wordsSelected, setWordsSelected] = useState(false);
   const [timeAmount, setTimeAmount] = useState(15);
   const [wordAmount, setWordAmount] = useState(25);
+
+  const [gameEnd, setGameEnd] = useState(false);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -278,6 +281,7 @@ function Home() {
 
   function resetGame() {
     setGameInProgress(false);
+    setGameEnd(false);
     setTextIndex(0);
     setWordsCompleted(0);
     setWordsCorrect(0);
@@ -312,57 +316,75 @@ function Home() {
 
   return (
     <main className="home">
-      <SettingsBar
-        timeSelected={timeSelected}
-        wordsSelected={wordsSelected}
-        timeAmount={timeAmount}
-        wordAmount={wordAmount}
-        setTimeSelected={setTimeSelected}
-        setWordsSelected={setWordsSelected}
-        setTimeAmount={setTimeAmount}
-        setWordAmount={setWordAmount}
-      />
-      <div className="game">
-        {gameInProgress && (
-          <div className="game__timer">
-            <Timer timeAmount={timeAmount} />
+      {!gameEnd && (
+        <>
+          <SettingsBar
+            timeSelected={timeSelected}
+            wordsSelected={wordsSelected}
+            timeAmount={timeAmount}
+            wordAmount={wordAmount}
+            setTimeSelected={setTimeSelected}
+            setWordsSelected={setWordsSelected}
+            setTimeAmount={setTimeAmount}
+            setWordAmount={setWordAmount}
+          />
+          <div className="game">
+            {gameInProgress && (
+              <div className="game__timer">
+                <Timer
+                  timeAmount={timeAmount}
+                  endGame={() => {
+                    setGameEnd(true);
+                  }}
+                />
+              </div>
+            )}
+            {!gameInProgress && (
+              <div className="game__timer game__timer--inactive">00</div>
+            )}
+            <div className="game__container">
+              <div className="game__cursor"></div>
+              <div className="game__words">
+                {textArr.map((word, i) => {
+                  return (
+                    <div className="game__word" key={i}>
+                      {word.split("").map((letter, j) => {
+                        if (j === 0 && i === 0)
+                          return (
+                            <span className="game__letter current" key={j}>
+                              {letter}
+                            </span>
+                          );
+                        else
+                          return (
+                            <span className="game__letter" key={j}>
+                              {letter}
+                            </span>
+                          );
+                      })}{" "}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="game__reset-container">
+              <img className="game__reset" src={reset} onClick={resetGame} />
+              <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
+            </div>
           </div>
-        )}
-        {!gameInProgress && (
-          <div className="game__timer game__timer--inactive">
-            <Timer timeAmount={timeAmount} />
-          </div>
-        )}
-        <div className="game__container">
-          <div className="game__cursor"></div>
-          <div className="game__words">
-            {textArr.map((word, i) => {
-              return (
-                <div className="game__word" key={i}>
-                  {word.split("").map((letter, j) => {
-                    if (j === 0 && i === 0)
-                      return (
-                        <span className="game__letter current" key={j}>
-                          {letter}
-                        </span>
-                      );
-                    else
-                      return (
-                        <span className="game__letter" key={j}>
-                          {letter}
-                        </span>
-                      );
-                  })}{" "}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="game__reset-container">
-          <img className="game__reset" src={reset} onClick={resetGame} />
-          <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
-        </div>
-      </div>
+        </>
+      )}
+      {gameEnd && (
+        <Results
+          wordsCorrect={wordsCorrect}
+          wordsCompleted={wordsCompleted}
+          timeSelected={timeSelected}
+          wordsSelected={wordsSelected}
+          timeAmount={timeAmount}
+          wordAmount={wordAmount}
+          reset={resetGame}
+        />
+      )}
     </main>
   );
 }

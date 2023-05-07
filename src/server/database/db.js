@@ -1,20 +1,29 @@
-import { Pool } from "pg";
-
+require("dotenv").config();
+const Pool = require("pg").Pool;
 const Sequelize = require("sequelize");
+//const connectionString = process.env.POSTGRES_URL;
 const connectionString =
     "postgres://vseqcjmo:jpBip-0subWpZcQbDZyN-g_PMpl_YZ6i@lallah.db.elephantsql.com/vseqcjmo";
-
-const pool = new Pool({
+console.log(connectionString);
+const config = {
     connectionString,
     ssl: {
         rejectUnauthorized: false,
     },
-});
+};
 
 const connectDB = async () => {
     try {
+        const pool = new Pool(config);
         await pool.connect();
-        const sequelize = new Sequelize(connectionString);
+        const sequelize = new Sequelize(connectionString, {
+            host: "localhost",
+            ssl: true,
+            dialect: "postgres",
+            dialectOptions: {
+                ssl: { require: true },
+            },
+        });
         await sequelize.authenticate();
         console.log("Connection has been established successfully.");
     } catch (error) {

@@ -336,7 +336,7 @@ function Home() {
             setWordAmount={setWordAmount}
           />
           <div className="game">
-            {gameInProgress && (
+            {gameInProgress && timeSelected && (
               <div className="game__timer">
                 <Timer
                   timeAmount={timeAmount}
@@ -348,6 +348,9 @@ function Home() {
             )}
             {!gameInProgress && (
               <div className="game__timer game__timer--inactive">00</div>
+            )}
+            {gameInProgress && wordsSelected && (
+              <div className="game__timer">{`${wordsCompleted}/${wordAmount}`}</div>
             )}
             <div className="game__container">
               <div className="game__cursor"></div>
@@ -376,7 +379,6 @@ function Home() {
             </div>
             <div className="game__reset-container">
               <img className="game__reset" src={reset} onClick={resetGame} />
-              <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
             </div>
           </div>
         </>

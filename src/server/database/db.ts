@@ -1,11 +1,27 @@
-import {Pool} from "pg";
+import { Pool } from "pg";
+
+const Sequelize = require("sequelize");
+const connectionString =
+    "postgres://vseqcjmo:jpBip-0subWpZcQbDZyN-g_PMpl_YZ6i@lallah.db.elephantsql.com/vseqcjmo";
 
 const pool = new Pool({
-    connectionString:"postgres://vseqcjmo:jpBip-0subWpZcQbDZyN-g_PMpl_YZ6i@lallah.db.elephantsql.com/vseqcjmo",
-    ssl:{
-        rejectUnauthorized: false
-    }
+    connectionString,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
+
+const connectDB = async () => {
+    try {
+        await pool.connect();
+        const sequelize = new Sequelize(connectionString);
+        await sequelize.authenticate();
+        console.log("Connection has been established successfully.");
+    } catch (error) {
+        console.error("Unable to connect : ", error);
+    }
+};
+
 // pool.connect(function(err) {
 //      if(err) {
 //       return console.error('could not connect to postgres', err);
@@ -21,4 +37,5 @@ const pool = new Pool({
 //     });
 //   });
 
-  export default pool;
+module.exports = connectDB;
+//export default pool;

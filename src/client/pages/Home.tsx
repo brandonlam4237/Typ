@@ -268,7 +268,7 @@ function Home() {
   }, [textIndex]);
 
   useEffect(() => {
-    if (wordsCompleted === wordAmount) {
+    if (wordsSelected && wordsCompleted === wordAmount) {
       setEndTime(wordsTime);
       setGameEnd(true);
     }

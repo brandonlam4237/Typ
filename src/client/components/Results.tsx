@@ -1,3 +1,6 @@
+import "../scss/results.scss";
+import resetIcon from "../assets/reset.svg";
+
 interface resultsProps {
   wordsCorrect: number;
   wordsCompleted: number;
@@ -20,22 +23,31 @@ function Results(props: resultsProps) {
   } = props;
   return (
     <main className="results">
-      <div className="results__container">
-        <div>
+      <div className="container">
+        <div className="container__field">
           <p>WPM</p>
-          <p>87</p>
+          <p className="container__field-val">87</p>
         </div>
-        <div>
-          <p>Test Type</p>
-          <p>time 30s</p>
+        <div className="container__field">
+          <p>Test</p>
+          <p className="container__field-val">time 30s</p>
         </div>
-        <div>
+        <div className="container__field">
           <p>Acc</p>
-          <p>93%</p>
+          <p className="container__field-val">93%</p>
         </div>
-        <div>
+        <div className="container__field">
           <p>Time</p>
-          <p>30s</p>
+          <p className="container__field-val">30s</p>
+        </div>
+        <div className="container__reset-container">
+          <img
+            src={resetIcon}
+            className="container__reset"
+            onClick={() => {
+              reset();
+            }}
+          />
         </div>
       </div>
     </main>

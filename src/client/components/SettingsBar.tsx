@@ -208,7 +208,7 @@ function SettingsBar(props: settingsProps) {
               }}
               onMouseLeave={() => {
                 if (wordAmount === 25) setWords25Color({ color: red });
-                else setWords50Color({ color: lightGray });
+                else setWords25Color({ color: lightGray });
               }}
             >
               25

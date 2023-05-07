@@ -15,3 +15,5 @@ thumb
 sketch
 
 dist/
+
+*.swp

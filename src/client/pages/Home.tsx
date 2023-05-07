@@ -355,6 +355,7 @@ function Home() {
             setWordsSelected={setWordsSelected}
             setTimeAmount={setTimeAmount}
             setWordAmount={setWordAmount}
+            gameInProgress={gameInProgress}
           />
           <div className="game">
             {gameInProgress && timeSelected && (

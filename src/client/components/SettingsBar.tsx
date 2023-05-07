@@ -36,19 +36,39 @@ function SettingsBar(props: settingsProps) {
     setWordAmount,
   } = props;
 
-  const [timeColor, setTimeColor] = useState({ color: red });
-  const [svgTimeColor, setSvgTimeColor] = useState({ filter: svgRed });
+  const [timeColor, setTimeColor] = useState(
+    timeSelected ? { color: red } : { color: lightGray }
+  );
+  const [svgTimeColor, setSvgTimeColor] = useState(
+    timeSelected ? { filter: svgRed } : { filter: svgLightGray }
+  );
 
-  const [wordsColor, setWordsColor] = useState({ color: lightGray });
-  const [svgWordsColor, setSvgWordsColor] = useState({ filter: svgLightGray });
+  const [wordsColor, setWordsColor] = useState(
+    wordsSelected ? { color: red } : { color: lightGray }
+  );
+  const [svgWordsColor, setSvgWordsColor] = useState(
+    wordsSelected ? { filter: svgRed } : { filter: svgLightGray }
+  );
 
-  const [time15Color, setTime15Color] = useState({ color: red });
-  const [time30Color, setTime30Color] = useState({ color: lightGray });
-  const [time60Color, setTime60Color] = useState({ color: lightGray });
+  const [time15Color, setTime15Color] = useState(
+    timeAmount === 15 ? { color: red } : { color: lightGray }
+  );
+  const [time30Color, setTime30Color] = useState(
+    timeAmount === 30 ? { color: red } : { color: lightGray }
+  );
+  const [time60Color, setTime60Color] = useState(
+    timeAmount === 60 ? { color: red } : { color: lightGray }
+  );
 
-  const [words10Color, setWords10Color] = useState({ color: red });
-  const [words25Color, setWords25Color] = useState({ color: lightGray });
-  const [words50Color, setWords50Color] = useState({ color: lightGray });
+  const [words10Color, setWords10Color] = useState(
+    wordAmount === 10 ? { color: red } : { color: lightGray }
+  );
+  const [words25Color, setWords25Color] = useState(
+    wordAmount === 25 ? { color: red } : { color: lightGray }
+  );
+  const [words50Color, setWords50Color] = useState(
+    wordAmount === 50 ? { color: red } : { color: lightGray }
+  );
 
   return (
     <main className="settings">

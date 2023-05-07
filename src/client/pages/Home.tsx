@@ -284,6 +284,12 @@ function Home() {
     }
   }, [wordsTime, gameInProgress, wordsSelected]);
 
+  useEffect(() => {
+    if (wordsSelected) {
+      setTextArr(text.split(" ").slice(0, wordAmount));
+    } else setTextArr(text.split(" "));
+  }, [wordAmount, wordsSelected, gameEnd]);
+
   // return the number of mistakes in current word
   function incorrectCount() {
     const currLetter = document.querySelector<HTMLElement>(".current");

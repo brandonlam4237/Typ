@@ -25,6 +25,8 @@ function Home() {
   const [wordAmount, setWordAmount] = useState(10);
 
   const [gameEnd, setGameEnd] = useState(false);
+  const [wordsTime, setWordsTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -265,6 +267,23 @@ function Home() {
     };
   }, [textIndex]);
 
+  useEffect(() => {
+    if (wordsCompleted === wordAmount) {
+      setEndTime(wordsTime);
+      setGameEnd(true);
+    }
+  }, [wordsCompleted]);
+
+  // timer for word length test
+  useEffect(() => {
+    if (gameInProgress && wordsSelected && wordsCompleted !== wordAmount) {
+      let timer = setInterval(() => {
+        setWordsTime((prev) => prev + 1);
+        clearInterval(timer);
+      }, 1000);
+    }
+  }, [wordsTime, gameInProgress, wordsSelected]);
+
   // return the number of mistakes in current word
   function incorrectCount() {
     const currLetter = document.querySelector<HTMLElement>(".current");
@@ -289,6 +308,8 @@ function Home() {
     setWordsCompleted(0);
     setWordsCorrect(0);
     setMistakes(0);
+    setWordsTime(0);
+    setEndTime(0);
 
     // clean up old class modifiers
     const currLetter = document.querySelector(".current");
@@ -336,7 +357,7 @@ function Home() {
             setWordAmount={setWordAmount}
           />
           <div className="game">
-            {gameInProgress && (
+            {gameInProgress && timeSelected && (
               <div className="game__timer">
                 <Timer
                   timeAmount={timeAmount}
@@ -348,6 +369,9 @@ function Home() {
             )}
             {!gameInProgress && (
               <div className="game__timer game__timer--inactive">00</div>
+            )}
+            {gameInProgress && wordsSelected && (
+              <div className="game__timer">{`${wordsCompleted}/${wordAmount}`}</div>
             )}
             <div className="game__container">
               <div className="game__cursor"></div>
@@ -376,7 +400,6 @@ function Home() {
             </div>
             <div className="game__reset-container">
               <img className="game__reset" src={reset} onClick={resetGame} />
-              <div>{`${wordsCorrect}/${wordsCompleted}`}</div>
             </div>
           </div>
         </>
@@ -392,6 +415,7 @@ function Home() {
           mistakes={mistakes}
           letterCount={textIndex}
           reset={resetGame}
+          endTime={endTime}
         />
       )}
     </main>

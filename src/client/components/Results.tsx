@@ -11,6 +11,7 @@ interface resultsProps {
   timeAmount: number;
   wordAmount: number;
   reset: Function;
+  wordsTime: number;
 }
 
 function Results(props: resultsProps) {
@@ -24,6 +25,7 @@ function Results(props: resultsProps) {
     timeAmount,
     wordAmount,
     reset,
+    wordsTime,
   } = props;
   return (
     <main className="results">
@@ -35,7 +37,11 @@ function Results(props: resultsProps) {
               (wordsCorrect / timeAmount) * 60
             )}`}</p>
           )}
-          {wordsSelected && <p className="container__field-val">53</p>}
+          {wordsSelected && (
+            <p className="container__field-val">{`${Math.floor(
+              (wordsCorrect / wordsTime) * 60
+            )}`}</p>
+          )}
         </div>
         <div className="container__field">
           <p>Test</p>
@@ -48,19 +54,18 @@ function Results(props: resultsProps) {
         </div>
         <div className="container__field">
           <p>Acc</p>
-          {timeSelected && (
-            <p className="container__field-val">{`${Math.floor(
-              ((letterCount - mistakes) / letterCount) * 100
-            )}%`}</p>
-          )}
-          {wordsSelected && <p className="container__field-val">10</p>}
+          <p className="container__field-val">{`${Math.floor(
+            ((letterCount - mistakes) / letterCount) * 100
+          )}%`}</p>
         </div>
         <div className="container__field">
           <p>Time</p>
           {timeSelected && (
             <p className="container__field-val">{`${timeAmount}s`}</p>
           )}
-          {wordsSelected && <p className="container__field-val">10</p>}
+          {wordsSelected && (
+            <p className="container__field-val">{`${wordsTime}s`}</p>
+          )}
         </div>
         <div className="container__reset-container">
           <img

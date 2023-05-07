@@ -25,6 +25,7 @@ function Home() {
   const [wordAmount, setWordAmount] = useState(10);
 
   const [gameEnd, setGameEnd] = useState(false);
+  const [wordsTime, setWordsTime] = useState(0);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -265,6 +266,22 @@ function Home() {
     };
   }, [textIndex]);
 
+  useEffect(() => {
+    if (wordsCompleted === wordAmount) {
+      setGameEnd(true);
+    }
+  }, [wordsCompleted]);
+
+  // timer for word length test
+  useEffect(() => {
+    if (gameInProgress && wordsSelected && wordsCompleted !== wordAmount) {
+      let timer = setInterval(() => {
+        setWordsTime((prev) => prev + 1);
+        clearInterval(timer);
+      }, 1000);
+    }
+  }, [wordsTime, gameInProgress, wordsSelected]);
+
   // return the number of mistakes in current word
   function incorrectCount() {
     const currLetter = document.querySelector<HTMLElement>(".current");
@@ -289,6 +306,7 @@ function Home() {
     setWordsCompleted(0);
     setWordsCorrect(0);
     setMistakes(0);
+    setWordsTime(0);
 
     // clean up old class modifiers
     const currLetter = document.querySelector(".current");
@@ -394,6 +412,7 @@ function Home() {
           mistakes={mistakes}
           letterCount={textIndex}
           reset={resetGame}
+          wordsTime={wordsTime}
         />
       )}
     </main>

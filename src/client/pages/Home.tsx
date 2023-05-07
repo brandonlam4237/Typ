@@ -22,7 +22,7 @@ function Home() {
   const [timeSelected, setTimeSelected] = useState(true);
   const [wordsSelected, setWordsSelected] = useState(false);
   const [timeAmount, setTimeAmount] = useState(15);
-  const [wordAmount, setWordAmount] = useState(25);
+  const [wordAmount, setWordAmount] = useState(10);
 
   const [gameEnd, setGameEnd] = useState(false);
 

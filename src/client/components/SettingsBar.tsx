@@ -46,9 +46,9 @@ function SettingsBar(props: settingsProps) {
   const [time30Color, setTime30Color] = useState({ color: lightGray });
   const [time60Color, setTime60Color] = useState({ color: lightGray });
 
-  const [words25Color, setWords25Color] = useState({ color: red });
+  const [words10Color, setWords10Color] = useState({ color: red });
+  const [words25Color, setWords25Color] = useState({ color: lightGray });
   const [words50Color, setWords50Color] = useState({ color: lightGray });
-  const [words100Color, setWords100Color] = useState({ color: lightGray });
 
   return (
     <main className="settings">
@@ -177,19 +177,38 @@ function SettingsBar(props: settingsProps) {
           <div className="settings__nums">
             <div
               className="settings__num"
+              style={words10Color}
+              onClick={() => {
+                setWordAmount(10);
+                setWords10Color({ color: red });
+                setWords25Color({ color: lightGray });
+                setWords50Color({ color: lightGray });
+              }}
+              onMouseEnter={() => {
+                if (wordAmount !== 10) setWords10Color({ color: white });
+              }}
+              onMouseLeave={() => {
+                if (wordAmount === 10) setWords10Color({ color: red });
+                else setWords10Color({ color: lightGray });
+              }}
+            >
+              10
+            </div>
+            <div
+              className="settings__num"
               style={words25Color}
               onClick={() => {
                 setWordAmount(25);
+                setWords10Color({ color: lightGray });
                 setWords25Color({ color: red });
                 setWords50Color({ color: lightGray });
-                setWords100Color({ color: lightGray });
               }}
               onMouseEnter={() => {
                 if (wordAmount !== 25) setWords25Color({ color: white });
               }}
               onMouseLeave={() => {
                 if (wordAmount === 25) setWords25Color({ color: red });
-                else setWords25Color({ color: lightGray });
+                else setWords50Color({ color: lightGray });
               }}
             >
               25
@@ -199,9 +218,9 @@ function SettingsBar(props: settingsProps) {
               style={words50Color}
               onClick={() => {
                 setWordAmount(50);
+                setWords10Color({ color: lightGray });
                 setWords25Color({ color: lightGray });
                 setWords50Color({ color: red });
-                setWords100Color({ color: lightGray });
               }}
               onMouseEnter={() => {
                 if (wordAmount !== 50) setWords50Color({ color: white });
@@ -212,25 +231,6 @@ function SettingsBar(props: settingsProps) {
               }}
             >
               50
-            </div>
-            <div
-              className="settings__num"
-              style={words100Color}
-              onClick={() => {
-                setWordAmount(100);
-                setWords25Color({ color: lightGray });
-                setWords50Color({ color: lightGray });
-                setWords100Color({ color: red });
-              }}
-              onMouseEnter={() => {
-                if (wordAmount !== 100) setWords100Color({ color: white });
-              }}
-              onMouseLeave={() => {
-                if (wordAmount === 100) setWords100Color({ color: red });
-                else setWords100Color({ color: lightGray });
-              }}
-            >
-              100
             </div>
           </div>
         )}

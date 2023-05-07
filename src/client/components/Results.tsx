@@ -4,6 +4,8 @@ import resetIcon from "../assets/reset.svg";
 interface resultsProps {
   wordsCorrect: number;
   wordsCompleted: number;
+  mistakes: number;
+  letterCount: number;
   timeSelected: boolean;
   wordsSelected: boolean;
   timeAmount: number;
@@ -15,6 +17,8 @@ function Results(props: resultsProps) {
   const {
     wordsCorrect,
     wordsCompleted,
+    mistakes,
+    letterCount,
     timeSelected,
     wordsSelected,
     timeAmount,
@@ -46,7 +50,7 @@ function Results(props: resultsProps) {
           <p>Acc</p>
           {timeSelected && (
             <p className="container__field-val">{`${Math.floor(
-              (wordsCorrect / wordsCompleted) * 100
+              ((letterCount - mistakes) / letterCount) * 100
             )}%`}</p>
           )}
           {wordsSelected && <p className="container__field-val">10</p>}

@@ -17,6 +17,7 @@ function Home() {
   const [textIndex, setTextIndex] = useState(0);
   const [wordsCorrect, setWordsCorrect] = useState(0);
   const [wordsCompleted, setWordsCompleted] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
 
   const [timeSelected, setTimeSelected] = useState(true);
   const [wordsSelected, setWordsSelected] = useState(false);
@@ -35,6 +36,7 @@ function Home() {
 
       // handle incorrect letter
       if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
+        setMistakes(mistakes + 1);
         const currLetter = document.querySelector<HTMLElement>(".current");
         const incorrectLetter = document.createElement("span");
         incorrectLetter.textContent = e.key;
@@ -90,6 +92,7 @@ function Home() {
       // space key pressed incorrectly
       if (e.key === " " && e.key !== text[textIndex] && gameInProgress) {
         setWordsCompleted(wordsCompleted + 1);
+        setMistakes(mistakes + 1);
         // skip to next word
         let count = 0;
         let index = textIndex;
@@ -285,6 +288,7 @@ function Home() {
     setTextIndex(0);
     setWordsCompleted(0);
     setWordsCorrect(0);
+    setMistakes(0);
 
     // clean up old class modifiers
     const currLetter = document.querySelector(".current");
@@ -385,6 +389,8 @@ function Home() {
           wordsSelected={wordsSelected}
           timeAmount={timeAmount}
           wordAmount={wordAmount}
+          mistakes={mistakes}
+          letterCount={textIndex}
           reset={resetGame}
         />
       )}

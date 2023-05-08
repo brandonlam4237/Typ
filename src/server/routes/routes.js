@@ -14,6 +14,8 @@ router.get("/", function (req, res) {
 
 // PHRASE ROUTES
 //router.get("/phrases", controller.getPhrases);
-router.get("/phrases", phrase_controller.phrase_list);
+
+//GET for all phrases.
+router.get("/phrases", phrase_controller.getAllPhrases);
 
 module.exports = router;

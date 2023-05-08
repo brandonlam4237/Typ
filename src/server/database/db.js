@@ -12,9 +12,11 @@ const config = {
     },
 };
 
+//Sequalize
 const connectDB = async () => {
     try {
         const pool = new Pool(config);
+        module.exports = pool;
         await pool.connect();
         const sequelize = new Sequelize(connectionString, {
             host: "localhost",
@@ -31,6 +33,11 @@ const connectDB = async () => {
     }
 };
 
+
+
+module.exports = connectDB;
+
+
 // pool.connect(function(err) {
 //      if(err) {
 //       return console.error('could not connect to postgres', err);
@@ -45,6 +52,4 @@ const connectDB = async () => {
 //       pool.end();
 //     });
 //   });
-
-module.exports = connectDB;
 //export default pool;

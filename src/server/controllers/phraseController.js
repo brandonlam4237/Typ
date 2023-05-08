@@ -1,6 +1,9 @@
 const Phrase = require("../models/phrase");
 const asyncHandler = require("express-async-handler");
 
-exports.phrase_list = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED YET : Lists all phrases");
+//this get's all phrases from our model and returns as json.
+exports.getAllPhrases= asyncHandler(async (req, res, next) => {
+    const phrases = await Phrase.findAll();
+    return res.status(200).json(phrases);
 });
+

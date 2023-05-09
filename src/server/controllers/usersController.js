@@ -7,8 +7,12 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     return res.status(200).json(users);
 });
 
+
 exports.getUserByID = asyncHandler(async (req,res, next)=>{
     const id = parseInt(req.params.id);
     const user = await Phrase.findByPk(id);
+    if (user == null){
+        res.send("User not found or does not exist");
+    }
     return res.status(200).json(user);
 });

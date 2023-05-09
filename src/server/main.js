@@ -13,30 +13,13 @@ app.get("/hello", (_, res) => {
     res.send("Hello from the backend: Vite + React + TypeScript!");
 });
 
+app.use(express.json());
 // Routes
 app.use("/api", router);
 
-app.use(express.json());
 
-ViteExpress.listen(app, 3000, async () => {
-    try {
-        await connectDB();
-        console.log("Server is listening on port 3000...");
-    } catch (error) {
-        console.error("ERROR STARTING SERVER : ", error);
-    }
+ViteExpress.listen(app, 3000, async () =>{
+  //await connectDB(); 
+  console.log("Server is listening on port 3000...")
 });
 
-/*
-const start = async () => {
-    try {
-        await connectDB();
-        app.listen(PORT, () => {
-            console.log(`Listening on port ${PORT}...`);
-        });
-    } catch (error) {
-        console.error("ERROR STARTING SERVER : ", error);
-    }
-};
-start();
-*/

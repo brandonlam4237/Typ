@@ -122,7 +122,6 @@ function Home() {
 
           // scroll words up a row if needed (past second row)
           if (space > 90) {
-            console.log("spacing");
             const words = document.querySelector(".game__words") as HTMLElement;
             const top: any = words.style.marginTop.slice(0, -2);
             words.style.marginTop = `${top - 35}` + "px";
@@ -243,15 +242,6 @@ function Home() {
             `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
       }
-
-      if (true) {
-        const currLetter = document.querySelector<HTMLElement>(".current");
-        const nextLetter = currLetter?.parentElement?.nextSibling
-          ?.firstChild as HTMLElement;
-        console.log("curr", currLetter);
-        console.log("next", nextLetter);
-        console.log("*******************");
-      }
     };
 
     document.addEventListener("keydown", handleKey);
@@ -309,13 +299,11 @@ function Home() {
     let incorrectCount = 0;
     if (parent?.children) {
       for (let i of parent?.children) {
-        //console.log(i);
         if (i.classList.contains("incorrect")) {
           incorrectCount += 1;
         }
       }
     }
-    //console.log("incorrect:", incorrectCount);
     return incorrectCount;
   }
 
@@ -344,10 +332,8 @@ function Home() {
 
     // fetch new text
     fetchText();
-    console.log(text);
     const newCurrLetter = document.querySelector(".game__letter");
     newCurrLetter?.classList.add("current");
-    console.log(newCurrLetter);
 
     // reset cursor position
     const cursor = document.querySelector(".game__cursor") as HTMLElement;

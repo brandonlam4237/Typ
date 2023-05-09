@@ -18,6 +18,25 @@ app.use("/api", router);
 
 app.use(express.json());
 
-ViteExpress.listen(app, 3000, () =>
-  console.log("Server is listening on port 3000...")
-);
+ViteExpress.listen(app, 3000, async () => {
+    try {
+        await connectDB();
+        console.log("Server is listening on port 3000...");
+    } catch (error) {
+        console.error("ERROR STARTING SERVER : ", error);
+    }
+});
+
+/*
+const start = async () => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => {
+            console.log(`Listening on port ${PORT}...`);
+        });
+    } catch (error) {
+        console.error("ERROR STARTING SERVER : ", error);
+    }
+};
+start();
+*/

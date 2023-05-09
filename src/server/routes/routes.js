@@ -18,6 +18,9 @@ router.get("/", function (req, res) {
 
 //GET for all phrases.
 router.get("/phrases", phrase_controller.getAllPhrases);
+router.get("/phrases/:id", phrase_controller.getPhraseByID);
+
 router.get("/users", users_controller.getAllUsers);
+router.get("/users/:id", users_controller.getUserByID);
 
 module.exports = router;

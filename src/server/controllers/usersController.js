@@ -6,3 +6,9 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     const users = await Phrase.findAll();
     return res.status(200).json(users);
 });
+
+exports.getUserByID = asyncHandler(async (req,res, next)=>{
+    const id = parseInt(req.params.id);
+    const user = await Phrase.findByPk(id);
+    return res.status(200).json(user);
+});

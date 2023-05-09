@@ -7,3 +7,9 @@ exports.getAllPhrases= asyncHandler(async (req, res, next) => {
     return res.status(200).json(phrases);
 });
 
+exports.getPhraseByID = asyncHandler(async (req,res, next)=>{
+    const id = parseInt(req.params.id);
+    const phrase = await Phrase.findByPk(id);
+    return res.status(200).json(phrase);
+});
+

@@ -16,4 +16,6 @@ router.get("/phrases/:id", phrase_controller.getPhraseByID);
 router.get("/users", users_controller.getAllUsers);
 router.get("/users/:id", users_controller.getUserByID);
 
+router.post("/users", users_controller.addUser);
+
 module.exports = router;

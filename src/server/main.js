@@ -13,11 +13,12 @@ app.get("/hello", (_, res) => {
     res.send("Hello from the backend: Vite + React + TypeScript!");
 });
 
+app.use(express.json());
 // Routes
 app.use("/api", router);
 
-app.use(express.json());
 
-ViteExpress.listen(app, 3000, () =>
+ViteExpress.listen(app, 3000, async () =>{
+  //await connectDB(); 
   console.log("Server is listening on port 3000...")
-);
+});

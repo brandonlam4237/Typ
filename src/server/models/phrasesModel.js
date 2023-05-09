@@ -6,6 +6,7 @@ const sequelize = new Sequelize(
   }
 );
 
+//Defines the model of our table which we already made in ElephantSQL
 const Phrase = sequelize.define("Phrase", {
   phrase_id: {
     type: DataTypes.INTEGER,

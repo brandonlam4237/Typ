@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Require Controller Mondules
 const phrase_controller = require("../controllers/phraseController");
+const users_controller = require("../controllers/usersController");
 
 // Home Page
 router.get("/", function (req, res) {
@@ -17,5 +18,6 @@ router.get("/", function (req, res) {
 
 //GET for all phrases.
 router.get("/phrases", phrase_controller.getAllPhrases);
+router.get("/users", users_controller.getAllUsers);
 
 module.exports = router;

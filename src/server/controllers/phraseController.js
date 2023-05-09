@@ -1,4 +1,4 @@
-const Phrase = require("../models/phrase");
+const Phrase = require("../models/phrasesModel");
 const asyncHandler = require("express-async-handler");
 
 //this get's all phrases from our model and returns as json.

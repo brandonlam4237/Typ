@@ -265,8 +265,13 @@ function Home() {
       .toString()
       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
       .toLowerCase();
+
+    if (wordsSelected) {
+      setTextArr(phraseText.split(" ").slice(0, wordAmount));
+    } else {
+      setTextArr(phraseText.split(" "));
+    }
     setText(phraseText);
-    setTextArr(phraseText.split(" "));
   }
 
   useEffect(() => {

@@ -6,12 +6,7 @@ import Timer from "../components/Timer";
 import Results from "../components/Results";
 
 function Home() {
-  let sampleText: string =
-    "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur";
-  let text2: string =
-    "amet consectetur adipiscing elit ut aliquam purus sit amet viverra maecenas accumsan lacus vel facilisis sagittis eu volutpat odio facilisis mauris sit porttitor leo a diam sollicitudin ultricies lacus sed turpis tincidunt id. Lectus proin nibh nisl condimentum id venenatis a condimentum vitae feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi suscipit tellus mauris a diam maecenas sed enim ut maecenas pharetra convallis posuere morbi leo urna molestie at elementum iaculis eu non diam phasellus vestibulum lorem sed at risus viverra adipiscing at senectus et netus et malesuada fames ac turpis egestas urna molestie at elementum eu vitae congue eu consequat ac felis donec et urna cursus eget nunc scelerisque viverra mauris in aliquam sem cursus mattis molestie a iaculis at erat pellentesque adipiscing elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue";
-
-  const [text, setText] = useState(sampleText);
+  const [text, setText] = useState("");
   const [textArr, setTextArr] = useState(text.split(" "));
   const [gameInProgress, setGameInProgress] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
@@ -127,7 +122,6 @@ function Home() {
 
           // scroll words up a row if needed (past second row)
           if (space > 90) {
-            console.log("spacing");
             const words = document.querySelector(".game__words") as HTMLElement;
             const top: any = words.style.marginTop.slice(0, -2);
             words.style.marginTop = `${top - 35}` + "px";
@@ -248,15 +242,6 @@ function Home() {
             `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
       }
-
-      if (true) {
-        const currLetter = document.querySelector<HTMLElement>(".current");
-        const nextLetter = currLetter?.parentElement?.nextSibling
-          ?.firstChild as HTMLElement;
-        console.log("curr", currLetter);
-        console.log("next", nextLetter);
-        console.log("*******************");
-      }
     };
 
     document.addEventListener("keydown", handleKey);
@@ -265,7 +250,29 @@ function Home() {
     return () => {
       document.removeEventListener("keydown", handleKey);
     };
-  }, [textIndex]);
+  }, [textIndex, text]);
+
+  useEffect(() => {
+    fetchText();
+  }, []);
+
+  async function fetchText() {
+    const res = await fetch("http://localhost:3000/api/phrases/random");
+    const resJSON = await res.json();
+
+    // remove punctuation and uppercase from text
+    const phraseText = resJSON.phrase
+      .toString()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+      .toLowerCase();
+
+    if (wordsSelected) {
+      setTextArr(phraseText.split(" ").slice(0, wordAmount));
+    } else {
+      setTextArr(phraseText.split(" "));
+    }
+    setText(phraseText);
+  }
 
   useEffect(() => {
     if (wordsSelected && wordsCompleted === wordAmount) {
@@ -297,13 +304,11 @@ function Home() {
     let incorrectCount = 0;
     if (parent?.children) {
       for (let i of parent?.children) {
-        //console.log(i);
         if (i.classList.contains("incorrect")) {
           incorrectCount += 1;
         }
       }
     }
-    //console.log("incorrect:", incorrectCount);
     return incorrectCount;
   }
 
@@ -331,12 +336,9 @@ function Home() {
     });
 
     // fetch new text
-    setTextArr(text2.split(" "));
-    setText(text2);
-    console.log(text);
+    fetchText();
     const newCurrLetter = document.querySelector(".game__letter");
     newCurrLetter?.classList.add("current");
-    console.log(newCurrLetter);
 
     // reset cursor position
     const cursor = document.querySelector(".game__cursor") as HTMLElement;

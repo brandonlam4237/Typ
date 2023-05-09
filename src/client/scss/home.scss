@@ -1,0 +1,102 @@
+@import "colors";
+
+.home {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .game {
+    height: calc(100vh - 12rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    //border: solid red;
+    color: $light-gray;
+    max-width: 80rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+
+    &__container {
+      //border: solid red;
+      height: 6.5rem;
+      overflow: hidden;
+    }
+
+    &__words {
+      letter-spacing: 1px;
+      font-size: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-left: 0.1rem;
+      margin-top: 0px;
+    }
+
+    &__word {
+      .current {
+        //color: white;
+      }
+
+      .correct {
+        color: white;
+      }
+
+      .incorrect {
+        color: $red;
+      }
+    }
+
+    &__timer {
+      font-size: 1.5rem;
+      color: $red;
+      font-weight: bold;
+      margin-bottom: -1.5rem;
+      margin-left: 0.1rem;
+    }
+
+    &__timer--inactive {
+      visibility: hidden;
+    }
+
+    &__reset-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    &__reset {
+      height: 2rem;
+      cursor: pointer;
+      filter: invert(50%) sepia(0%) saturate(0%) hue-rotate(188deg)
+        brightness(91%) contrast(87%);
+    }
+
+    &__reset:hover {
+      filter: invert(44%) sepia(71%) saturate(5029%) hue-rotate(338deg)
+        brightness(109%) contrast(90%);
+    }
+
+    &__cursor {
+      background-color: $red;
+      height: 28px;
+      width: 2px;
+      position: absolute;
+      animation: blink 1s infinite;
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

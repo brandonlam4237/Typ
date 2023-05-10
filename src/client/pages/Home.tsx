@@ -263,7 +263,7 @@ function Home() {
     // remove punctuation and uppercase from text
     const phraseText = resJSON.phrase
       .toString()
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()']/g, "")
       .toLowerCase();
 
     if (wordsSelected) {

@@ -57,7 +57,7 @@ function Register() {
             className="form__input"
           />
         </div>
-        <button className="form__btn">register</button>
+        <button className="form__btn">Register</button>
         <p className="form__footer">Already have an account?</p>
       </form>
     </main>

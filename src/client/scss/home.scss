@@ -9,18 +9,19 @@
 
   .game {
     height: calc(100vh - 12rem);
+    @media (min-height: 750px) {
+      height: calc(100vh - 20rem);
+    }
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    //border: solid red;
     color: $light-gray;
     max-width: 80rem;
     padding-left: 5rem;
     padding-right: 5rem;
 
     &__container {
-      //border: solid red;
       height: 6.5rem;
       overflow: hidden;
     }

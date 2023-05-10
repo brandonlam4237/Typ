@@ -8,16 +8,18 @@ function Stats() {
         <div className="stats__grid-block-1">
           <div className="stats__user">
             <img src={userIcon} className="stats__user-icon" />
-            <p className="stats__title">Username</p>
+            <p>Username</p>
           </div>
-          <p style={{ color: "#757575" }}>Joined 26 Apr 2023</p>
+          <p style={{ color: "#757575", fontSize: "1rem" }}>
+            Joined 26 Apr 2023
+          </p>
 
-          <div>
-            <p className="stats__title">Tests Completed</p>
+          <div className="stats__grid-block-1-div">
+            <p>Tests Completed</p>
             <p className="stats__highlight stats__num-big">13</p>
           </div>
-          <div>
-            <p className="stats__title">Time Typing</p>
+          <div className="stats__grid-block-1-div">
+            <p>Time Typing</p>
             <p className="stats__highlight stats__num-big">00:26:15</p>
           </div>
           <button className="stats__logout-btn">Logout</button>
@@ -35,8 +37,8 @@ function Stats() {
           </div>
           <div className="stats__grid-block-col">
             <p className="stats__title">60 seconds</p>
-            <p className="stats__highlight stats__num-big">-</p>
-            <p className="stats__highlight">-</p>
+            <p className="stats__highlight stats__num-big stats__null">-</p>
+            <p className="stats__highlight stats__null">-</p>
           </div>
         </div>
         <div className="stats__grid-block">
@@ -47,8 +49,8 @@ function Stats() {
           </div>
           <div className="stats__grid-block-col">
             <p className="stats__title">25 words</p>
-            <p className="stats__highlight stats__num-big">-</p>
-            <p className="stats__highlight">-</p>
+            <p className="stats__highlight stats__num-big stats__null">-</p>
+            <p className="stats__highlight stats__null">-</p>
           </div>
           <div className="stats__grid-block-col">
             <p className="stats__title">50 words</p>

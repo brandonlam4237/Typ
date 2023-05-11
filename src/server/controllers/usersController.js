@@ -1,10 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/usersModel");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); 
+const jwt = require('jsonwebtoken')
 
 
 //this get's all phrases from our model and returns as json.
-exports.getAllUsers = asyncHandler(async (req, res, next) => {
+exports.getAllUsers = asyncHandler( async (req, res, next) => {
+    
     const users = await Users.findAll();
     return res.status(200).json(users);
 });
@@ -52,19 +54,41 @@ exports.addUser = asyncHandler(async (req,res, next)=>{
 
 
 exports.authUser = asyncHandler(async (req,res,next) =>{
-
     const user = await Users.findOne({where: {email: req.body.email}})
     if(user == null){return res.status(400).send('Cannot find user')}
     else{
         try{
+
             if(await bcrypt.compare(req.body.password, user.password)){
-                res.send('Successfully Logged In');
+                jwt.sign({user}, "random",(err,authToken)=>{
+                    res.json({
+                        status: "success",
+                        authToken: authToken,
+                        user
+                        
+                    })
+                })  
             }
-            else{ res.send('Incorrect Password')};
+            else{ res.json({ status: "failed"})};
         
         }catch{
             res.status(500).send('Login Failed');
         }
     }
-
 })
+
+exports.verifyToken = function(req,res,next){
+    const authHeader = req.headers['authorization'];
+    console.log(req)
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, "random", (err,user)=>{
+        if(err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+
+    
+}

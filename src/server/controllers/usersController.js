@@ -79,13 +79,32 @@ exports.authUser = asyncHandler(async (req,res,next) =>{
 
 exports.verifyToken = function(req,res,next){
     const authHeader = req.headers['authorization'];
-    console.log(req)
+    //console.log(req)
     const token = authHeader && authHeader.split(' ')[1];
 
     if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, "random", (err,user)=>{
         if(err) return res.sendStatus(403)
+        //console.log(user['user']['user_id'])
+        req.user = user
+        next()
+    })
+
+    
+}
+exports.verifyTokenUserSpecific = function(req,res,next){
+    const authHeader = req.headers['authorization'];
+    //console.log(req)
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
+    const id = parseInt(req.params.id);
+
+    jwt.verify(token, "random", (err,user)=>{
+        if(err || user['user']['user_id']!= id) return res.sendStatus(403)
+        
         req.user = user
         next()
     })

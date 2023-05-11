@@ -1,0 +1,55 @@
+@import "colors";
+
+.register {
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    @media (min-height: 700px) {
+      height: calc(100vh - 17rem);
+    }
+    gap: 1rem;
+
+    &__label {
+      color: $light-gray;
+      font-weight: bold;
+    }
+
+    &__input {
+      background-color: $dark-gray;
+      outline: none;
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      width: 15rem;
+      border-radius: 6px;
+    }
+
+    &__field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__btn {
+      background-color: $red;
+      border: none;
+      border-radius: 6px;
+      width: 15rem;
+      padding: 0.5rem;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    &__footer {
+      color: $light-gray;
+      text-decoration: underline;
+    }
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }
+}

@@ -9,7 +9,9 @@ function Navbar() {
       <Link to="/">
         <img src={logo} className="navbar__logo" />
       </Link>
-      <img src={user} className="navbar__user" />
+      <Link to="/register">
+        <img src={user} className="navbar__user" />
+      </Link>
     </main>
   );
 }

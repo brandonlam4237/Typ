@@ -13,9 +13,11 @@ router.get("/phrases/delete/all", phrase_controller.deleteAllPhrases);
 router.get("/phrases/:id", phrase_controller.getPhraseByID);
 
 //GET Endpoints for users.
-router.get("/users", users_controller.getAllUsers);
-router.get("/users/:id", users_controller.getUserByID);
+router.get("/users",users_controller.verifyToken,users_controller.getAllUsers); // This enpoints also contains stats so it needs to be protected
+router.get("/users/:id", users_controller.verifyTokenUserSpecific, users_controller.getUserByID); 
 
-router.post("/users", users_controller.addUser);
+//POST for users
+router.post("/users", users_controller.addUser);  
+router.post("/users/login", users_controller.authUser);
 
 module.exports = router;

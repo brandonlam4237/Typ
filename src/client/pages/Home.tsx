@@ -34,24 +34,22 @@ function Home() {
       // handle incorrect letter
       if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
         setMistakes(mistakes + 1);
+
         // mistake at end of word
         if (text[textIndex] === " ") {
-          console.log("space");
           const currLetter = document.querySelector<HTMLElement>(".current");
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
-          //currLetter?.classList.remove("current");
           currLetter?.classList.remove("complete");
-          //setWordsCompleted(wordsCompleted - 1);
           const incorrectLetter = document.createElement("span");
           incorrectLetter.textContent = e.key;
           incorrectLetter.classList.add("game__letter");
           incorrectLetter.classList.add("incorrect");
-          //incorrectLetter.classList.add("current");
           prevWordLastLetter?.parentNode?.insertBefore(
             incorrectLetter,
             prevWordLastLetter.nextSibling
           );
+
           // move cursor
           cursor.style.left =
             `${incorrectLetter?.getBoundingClientRect().right}` + "px";
@@ -246,7 +244,6 @@ function Home() {
 
           // check if previous wordletter is incorrect
           if (prevWordLastLetter.classList.contains("incorrect")) {
-            console.log("check");
             prevWordLastLetter.remove();
             currLetter?.classList.add("current");
 
@@ -262,7 +259,7 @@ function Home() {
           setWordsCompleted(wordsCompleted - 1);
           // need to check if previous word was completed correctly
           if (prevWordLastLetter.classList.contains("complete")) {
-            setWordsCorrect(wordsCorrect - 1);
+            setWordsCorrect(wordsCorrect - 1); // move this somewhere else
             prevWordLastLetter.classList.remove("complete");
           }
 
@@ -282,16 +279,6 @@ function Home() {
           cursor.style.left =
             `${prevLetter?.getBoundingClientRect().left}` + "px";
         }
-      }
-
-      if (true) {
-        const currLetter = document.querySelector<HTMLElement>(".current");
-        const nextLetter = currLetter?.parentElement?.nextSibling
-          ?.firstChild as HTMLElement;
-        console.log("textArr:", text[textIndex + 1]);
-        console.log("curr", currLetter);
-        console.log("next", nextLetter);
-        console.log("*******************");
       }
     };
 
@@ -393,8 +380,10 @@ function Home() {
 
     // reset cursor position
     const cursor = document.querySelector(".game__cursor") as HTMLElement;
-    cursor.style.left = "auto";
-    cursor.style.top = "auto";
+    if (cursor) {
+      cursor.style.left = "auto";
+      cursor.style.top = "auto";
+    }
 
     //reset the margins
     const words = document.querySelector(".game__words") as HTMLElement;
@@ -460,7 +449,6 @@ function Home() {
             </div>
             <div className="game__reset-container">
               <img className="game__reset" src={reset} onClick={resetGame} />
-              <p>{wordsCorrect}</p>
             </div>
           </div>
         </>

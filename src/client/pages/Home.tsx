@@ -34,17 +34,41 @@ function Home() {
       // handle incorrect letter
       if (e.key !== text[textIndex] && e.key.length === 1 && e.key !== " ") {
         setMistakes(mistakes + 1);
-        const currLetter = document.querySelector<HTMLElement>(".current");
-        const incorrectLetter = document.createElement("span");
-        incorrectLetter.textContent = e.key;
-        incorrectLetter.classList.add("game__letter");
-        incorrectLetter.classList.add("incorrect");
-        currLetter?.parentNode?.insertBefore(incorrectLetter, currLetter);
 
-        // move cursor
-        cursor.style.left =
-          `${currLetter?.getBoundingClientRect().left}` + "px";
-        cursor.style.top = `${currLetter?.getBoundingClientRect().top}` + "px";
+        // mistake at end of word
+        if (text[textIndex] === " ") {
+          const currLetter = document.querySelector<HTMLElement>(".current");
+          const prevWordLastLetter = currLetter?.parentElement?.previousSibling
+            ?.lastChild?.previousSibling as HTMLElement;
+          currLetter?.classList.remove("complete");
+          const incorrectLetter = document.createElement("span");
+          incorrectLetter.textContent = e.key;
+          incorrectLetter.classList.add("game__letter");
+          incorrectLetter.classList.add("incorrect");
+          prevWordLastLetter?.parentNode?.insertBefore(
+            incorrectLetter,
+            prevWordLastLetter.nextSibling
+          );
+
+          // move cursor
+          cursor.style.left =
+            `${incorrectLetter?.getBoundingClientRect().right}` + "px";
+          cursor.style.top =
+            `${incorrectLetter?.getBoundingClientRect().top}` + "px";
+        } else {
+          const currLetter = document.querySelector<HTMLElement>(".current");
+          const incorrectLetter = document.createElement("span");
+          incorrectLetter.textContent = e.key;
+          incorrectLetter.classList.add("game__letter");
+          incorrectLetter.classList.add("incorrect");
+          currLetter?.parentNode?.insertBefore(incorrectLetter, currLetter);
+
+          // move cursor
+          cursor.style.left =
+            `${currLetter?.getBoundingClientRect().left}` + "px";
+          cursor.style.top =
+            `${currLetter?.getBoundingClientRect().top}` + "px";
+        }
       }
 
       // check if key press matches next letter in prompt
@@ -218,10 +242,24 @@ function Home() {
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");
 
+          // check if previous wordletter is incorrect
+          if (prevWordLastLetter.classList.contains("incorrect")) {
+            prevWordLastLetter.remove();
+            currLetter?.classList.add("current");
+
+            const prevWordLastLetter2 = currLetter?.parentElement
+              ?.previousSibling?.lastChild?.previousSibling as HTMLElement;
+            cursor.style.left =
+              `${prevWordLastLetter2?.getBoundingClientRect().right}` + "px";
+            cursor.style.top =
+              `${prevWordLastLetter2?.getBoundingClientRect().top}` + "px";
+            return;
+          }
+
           setWordsCompleted(wordsCompleted - 1);
           // need to check if previous word was completed correctly
           if (prevWordLastLetter.classList.contains("complete")) {
-            setWordsCorrect(wordsCorrect - 1);
+            setWordsCorrect(wordsCorrect - 1); // move this somewhere else
             prevWordLastLetter.classList.remove("complete");
           }
 
@@ -342,8 +380,10 @@ function Home() {
 
     // reset cursor position
     const cursor = document.querySelector(".game__cursor") as HTMLElement;
-    cursor.style.left = "auto";
-    cursor.style.top = "auto";
+    if (cursor) {
+      cursor.style.left = "auto";
+      cursor.style.top = "auto";
+    }
 
     //reset the margins
     const words = document.querySelector(".game__words") as HTMLElement;

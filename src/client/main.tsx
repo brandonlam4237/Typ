@@ -2,7 +2,7 @@ import "./index.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { UserContextProvider } from "./context/AuthContext";
+import { UserContextProvider } from "./context/UserContext";
 
 import App from "./App";
 

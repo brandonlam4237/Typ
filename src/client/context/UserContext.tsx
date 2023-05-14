@@ -22,6 +22,13 @@ export const UserContextProvider = ({ children }: UserContextProviderType) => {
     user: null,
   });
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("typ_user") as string);
+    if (user) {
+      dispatch({ type: "LOGIN", payload: user });
+    }
+  }, []);
+
   console.log("Auth state", state);
 
   return (

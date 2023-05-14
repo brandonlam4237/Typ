@@ -14,4 +14,12 @@
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(325deg)
       brightness(104%) contrast(101%);
   }
+
+  &__account {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
 }

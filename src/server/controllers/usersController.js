@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Users = require("../models/usersModel");
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken')
-
+const stats_controller = require('../controllers/statsController')
 
 //this get's all phrases from our model and returns as json.
 exports.getAllUsers = asyncHandler( async (req, res, next) => {
@@ -44,6 +44,10 @@ exports.addUser = asyncHandler(async (req,res, next)=>{
                     creationdate: date
                 })
                 console.log(`User created with user id: ${newUser.user_id}`); 
+                stats = stats_controller.initStats(newUser.user_id);
+                console.log('Stats initiated');
+                console.log(stats);
+                res.status(200).send(`User created with id:${newUser.user_id}`);
 
             }
             catch(error){

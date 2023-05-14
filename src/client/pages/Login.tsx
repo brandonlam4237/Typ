@@ -11,7 +11,6 @@ function Login() {
   async function handleLogin(e: any) {
     e.preventDefault();
     await login(email, password);
-    console.log("hello?");
   }
 
   return (

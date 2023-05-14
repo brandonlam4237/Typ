@@ -238,6 +238,17 @@ function Home() {
         else if (!prevLetter) {
           const prevWordLastLetter = currLetter?.parentElement?.previousSibling
             ?.lastChild?.previousSibling as HTMLElement;
+
+          // backspacing by moving just the cursor for deleting a space
+          if (text[textIndex - 1] === " ") {
+            setTextIndex(textIndex - 1);
+            cursor.style.left =
+              `${prevWordLastLetter?.getBoundingClientRect().right}` + "px";
+            cursor.style.top =
+              `${prevWordLastLetter?.getBoundingClientRect().top}` + "px";
+            return;
+          }
+
           currLetter?.classList.remove("current");
           prevWordLastLetter?.classList.remove("correct");
           prevWordLastLetter?.classList.add("current");

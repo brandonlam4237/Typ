@@ -1,28 +1,36 @@
-import {
-  createBrowserRouter,
-  Route,
-  createRoutesFromElements,
-  RouterProvider,
-} from "react-router-dom";
-import RootLayout from "./layouts/RootLayout";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { useUserContext } from "./hooks/useUserContext";
 import Stats from "./pages/Stats";
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<RootLayout />}>
-      <Route index element={<Home />} />
-      <Route path="register" element={<Register />} />
-      <Route path="login" element={<Login />} />
-      <Route path="stats" element={<Stats />} />
-    </Route>
-  )
-);
-
 function App() {
-  return <RouterProvider router={router} />;
+  const { user } = useUserContext();
+
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route index element={<Home />} />
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/stats" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <Register /> : <Navigate to="/stats" />}
+          />
+          <Route
+            path="/stats"
+            element={user ? <Stats /> : <Navigate to="/login" />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;

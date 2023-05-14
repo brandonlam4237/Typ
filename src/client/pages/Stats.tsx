@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import userIcon from "../assets/account.svg";
 import "../scss/stats.scss";
+import { useLogout } from "../hooks/useLogout";
 
 function Stats() {
   const [username, setUsername] = useState("Username");
@@ -21,6 +22,8 @@ function Stats() {
   const [words25acc, setWords25acc] = useState(null);
   const [words50wpm, setWords50wpm] = useState(91);
   const [words50acc, setWords50acc] = useState(97);
+
+  const { logout } = useLogout();
 
   function formatTime(seconds: number) {
     let hours = Math.floor(seconds / 3600);
@@ -52,7 +55,9 @@ function Stats() {
               {formatTime(timeTyping)}
             </p>
           </div>
-          <button className="stats__logout-btn">Logout</button>
+          <button className="stats__logout-btn" onClick={logout}>
+            Logout
+          </button>
         </div>
         <div className="stats__grid-block">
           <div className="stats__grid-block-col">

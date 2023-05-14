@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../scss/login.scss";
+import { useLogin } from "../hooks/useLogin";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, error, isLoading } = useLogin();
+
+  async function handleLogin(e: any) {
+    e.preventDefault();
+    await login(email, password);
+    console.log(error);
+  }
 
   return (
     <main className="login">
@@ -33,7 +41,14 @@ function Login() {
             className="form__input"
           />
         </div>
-        <button className="form__btn">Login</button>
+        <button
+          className="form__btn"
+          onClick={(e) => {
+            handleLogin(e);
+          }}
+        >
+          Login
+        </button>
         <Link to="/register">
           <p className="form__footer">Create new account</p>
         </Link>

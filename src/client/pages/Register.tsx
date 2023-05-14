@@ -1,12 +1,28 @@
 import { useState } from "react";
 import "../scss/register.scss";
 import { Link } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const { login } = useLogin();
+
+  async function handleRegister(e: any) {
+    e.preventDefault();
+    const response = await fetch("http://localhost:3000/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, username, password }),
+    });
+    if (response.ok) {
+      await login(email, password);
+    }
+  }
+
   return (
     <main className="register">
       <form className="form">
@@ -58,7 +74,9 @@ function Register() {
             className="form__input"
           />
         </div>
-        <button className="form__btn">Register</button>
+        <button className="form__btn" onClick={handleRegister}>
+          Register
+        </button>
         <Link to="/login">
           <p className="form__footer">Already have an account?</p>
         </Link>

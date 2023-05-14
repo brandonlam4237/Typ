@@ -33,7 +33,6 @@ function Results(props: resultsProps) {
   const { user } = useUserContext();
 
   useEffect(() => {
-    console.log("game end update stats");
     updateWpm();
   }, []);
 

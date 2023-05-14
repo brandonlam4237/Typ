@@ -9,26 +9,56 @@ function Stats() {
   const [totalTests, setTotalTests] = useState(13);
   const [timeTyping, setTimeTyping] = useState(1575);
 
-  const [time15wpm, setTime15wpm] = useState(93);
-  const [time15acc, setTime15acc] = useState(98);
-  const [time30wpm, setTime30wpm] = useState(87);
-  const [time30acc, setTime30acc] = useState(96);
-  const [time60wpm, setTime60wpm] = useState(null);
-  const [time60acc, setTime60acc] = useState(null);
+  const [time15wpm, setTime15wpm] = useState(0);
+  const [time15acc, setTime15acc] = useState(0);
+  const [time30wpm, setTime30wpm] = useState(0);
+  const [time30acc, setTime30acc] = useState(0);
+  const [time60wpm, setTime60wpm] = useState(0);
+  const [time60acc, setTime60acc] = useState(0);
 
-  const [words10wpm, setWords10wpm] = useState(103);
-  const [words10acc, setWords10acc] = useState(99);
-  const [words25wpm, setWords25wpm] = useState(null);
-  const [words25acc, setWords25acc] = useState(null);
-  const [words50wpm, setWords50wpm] = useState(91);
-  const [words50acc, setWords50acc] = useState(97);
+  const [words10wpm, setWords10wpm] = useState(0);
+  const [words10acc, setWords10acc] = useState(0);
+  const [words25wpm, setWords25wpm] = useState(0);
+  const [words25acc, setWords25acc] = useState(0);
+  const [words50wpm, setWords50wpm] = useState(0);
+  const [words50acc, setWords50acc] = useState(0);
 
   const { user } = useUserContext();
   const { logout } = useLogout();
 
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  async function fetchStats() {
+    const res = await fetch(
+      "http://localhost:3000/api/stats/" + user.user.user_id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authToken}`,
+        },
+      }
+    );
+    const json = await res.json();
+    setWords10wpm(json.wpm_pb_10_words);
+    setWords25wpm(json.wpm_pb_25_words);
+    setWords50wpm(json.wpm_pb_50_words);
+    setWords10acc(json.acc_pb_10_words);
+    setWords25acc(json.acc_pb_25_words);
+    setWords50acc(json.acc_pb_50_words);
+
+    setTime15wpm(json.wpm_pb_15_time);
+    setTime30wpm(json.wpm_pb_30_time);
+    setTime60wpm(json.wpm_pb_60_time);
+    setTime15acc(json.acc_pb_15_time);
+    setTime30acc(json.acc_pb_30_time);
+    setTime60acc(json.acc_pb_60_time);
+  }
+
   function formatDate() {
     const arr = user.user.creationdate.split("-");
-    console.log(arr);
     const year = arr[0];
     const day = arr[2];
 

@@ -32,3 +32,22 @@ exports.updateUserStat = asyncHandler(async (req,res, next)=>{
     //handleResult(stats)
     return res.status(200).json({"status":"success"});
 });
+
+exports.initStats = asyncHandler(async (user_id)=>{
+  const newStats = await Stats.create({
+    user_id: user_id,
+    wpm_pb_15_time:0,
+    wpm_pb_30_time:0,
+    wpm_pb_60_time:0,
+    wpm_pb_10_words:0,
+    wpm_pb_25_words:0,
+    wpm_pb_50_words:0,
+    acc_pb_15_time:0,
+    acc_pb_30_time:0,
+    acc_pb_60_time:0,
+    acc_pb_10_words:0,
+    acc_pb_25_words:0,
+    acc_pb_50_words:0
+  })
+  return newStats;
+})

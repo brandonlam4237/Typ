@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import userIcon from "../assets/account.svg";
 import "../scss/stats.scss";
 import { useLogout } from "../hooks/useLogout";
+import { useUserContext } from "../hooks/useUserContext";
 
 function Stats() {
-  const [username, setUsername] = useState("Username");
   const [joinDate, setJoinDate] = useState("26 Apr 2023");
   const [totalTests, setTotalTests] = useState(13);
   const [timeTyping, setTimeTyping] = useState(1575);
@@ -23,7 +23,33 @@ function Stats() {
   const [words50wpm, setWords50wpm] = useState(91);
   const [words50acc, setWords50acc] = useState(97);
 
+  const { user } = useUserContext();
   const { logout } = useLogout();
+
+  function formatDate() {
+    const arr = user.user.creationdate.split("-");
+    console.log(arr);
+    const year = arr[0];
+    const day = arr[2];
+
+    const month_names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const month = month_names[arr[1] - 1];
+    return `Joined ${day} ${month} ${year}`;
+  }
 
   function formatTime(seconds: number) {
     let hours = Math.floor(seconds / 3600);
@@ -39,11 +65,9 @@ function Stats() {
         <div className="stats__grid-block-1">
           <div className="stats__user">
             <img src={userIcon} className="stats__user-icon" />
-            <p>{username}</p>
+            <p>{user.user.username}</p>
           </div>
-          <p style={{ color: "#757575", fontSize: "1rem" }}>
-            {`Joined ${joinDate}`}
-          </p>
+          <p style={{ color: "#757575", fontSize: "1rem" }}>{formatDate()}</p>
 
           <div className="stats__grid-block-1-div">
             <p>Tests Completed</p>

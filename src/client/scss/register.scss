@@ -51,6 +51,12 @@
       color: $light-gray;
       text-decoration: underline;
     }
+
+    &__error {
+      color: $red;
+      font-style: italic;
+      text-transform: lowercase;
+    }
   }
   input:-webkit-autofill,
   input:-webkit-autofill:focus {

@@ -37,8 +37,22 @@ function Login() {
       setPasswordBorder({ border: `solid ${red}` });
       return;
     }
+    if (!validateEmail(email)) {
+      setError("invalid email");
+      setEmailBorder({ border: `solid ${red}` });
+      return;
+    }
+
     await login(email, password);
   }
+
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
   return (
     <main className="login">

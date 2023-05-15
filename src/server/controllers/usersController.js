@@ -22,36 +22,49 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
 exports.addUser = asyncHandler(async (req, res, next) => {
     const { username, password, email, creationdate } = req.body;
 
+    // Form Validation
+    if (!username || !email || !password) {
+        return res.status(400).json({
+            status: "Error",
+            message: "Form Fields Cannot Be Empty",
+        });
+    }
+
     //First check if the username or email is taken.
     const found_username = await Users.findOne({
         where: { username: username },
     });
     const found_email = await Users.findOne({ where: { email: email } });
     if (found_username != null || found_email != null) {
-        res.send("Username or password is already in use");
+        return res.status(400).json({
+            status: "Error",
+            message: "Username or Email already in use",
+        });
     }
-    //Username and email are available
+    // Username and email are available
     else {
-        try {
-            //Encrypt password
-            const encryptedPW = await bcrypt.hash(password, 10);
+        //Encrypt password
+        const encryptedPW = await bcrypt.hash(password, 10);
 
-            const date = new Date(); //Today's date
-            //Add user to DB.
-            const newUser = await Users.create({
-                username: username,
-                password: encryptedPW,
-                email: email,
-                creationdate: date,
-            });
-            console.log(`User created with user id: ${newUser.user_id}`);
-            stats = stats_controller.initStats(newUser.user_id);
-            console.log("Stats initiated");
-            console.log(stats);
-            res.status(200).send(`User created with id:${newUser.user_id}`);
-        } catch (error) {
-            res.status(500).send(error);
-        }
+        const date = new Date(); //Today's date
+        //Add user to DB.
+        const newUser = await Users.create({
+            username: username,
+            password: encryptedPW,
+            email: email,
+            creationdate: date,
+        });
+        console.log(`User created with user id: ${newUser.user_id}`);
+        stats = stats_controller.initStats(newUser.user_id);
+        console.log("Stats initiated");
+        console.log(stats);
+        return res
+            .status(200)
+            .json({
+                status: "Success",
+                message: "Account Created Successfully",
+            })
+            .send(`User created with id:${newUser.user_id}`);
     }
 });
 

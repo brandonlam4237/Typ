@@ -4,6 +4,9 @@ import { useUserContext } from "./useUserContext";
 export const useLogin = () => {
   const [error, setError] = useState("");
   const { dispatch } = useUserContext();
+  const [emailBorder, setEmailBorder] = useState({ border: "none" });
+  const [passwordBorder, setPasswordBorder] = useState({ border: "none" });
+  const red = "#f34949";
 
   const login = async (email: string, password: string) => {
     setError("");
@@ -16,7 +19,14 @@ export const useLogin = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setError(json.message);
+      if (json.message.split(" ")[1] === "Email") {
+        setEmailBorder({ border: `solid ${red}` });
+        setError("email does not match any existing account");
+      }
+      if (json.message.split(" ")[1] === "Password") {
+        setPasswordBorder({ border: `solid ${red}` });
+        setError("inccorect password");
+      }
     }
     if (response.ok) {
       // save the user to local storage
@@ -27,5 +37,13 @@ export const useLogin = () => {
     }
   };
 
-  return { login, error };
+  return {
+    login,
+    error,
+    setError,
+    emailBorder,
+    setEmailBorder,
+    passwordBorder,
+    setPasswordBorder,
+  };
 };

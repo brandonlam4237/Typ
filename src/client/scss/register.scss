@@ -50,12 +50,19 @@
     &__footer {
       color: $light-gray;
       text-decoration: underline;
+      position: relative;
+      text-align: center;
+      width: 80rem;
     }
 
     &__error {
       color: $red;
       font-style: italic;
       text-transform: lowercase;
+      position: absolute;
+      top: 100%;
+      margin-top: 1rem;
+      width: 80rem;
     }
   }
   input:-webkit-autofill,

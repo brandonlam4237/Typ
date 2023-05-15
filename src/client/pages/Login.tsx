@@ -6,12 +6,38 @@ import { useLogin } from "../hooks/useLogin";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, error, isLoading } = useLogin();
+  const {
+    login,
+    error,
+    setError,
+    emailBorder,
+    setEmailBorder,
+    passwordBorder,
+    setPasswordBorder,
+  } = useLogin();
+  const red = "#f34949";
 
   async function handleLogin(e: any) {
     e.preventDefault();
+    setEmailBorder({ border: `none` });
+    setPasswordBorder({ border: `none` });
+    if (!email && !password) {
+      setError("email and password fields cannot be empty");
+      setEmailBorder({ border: `solid ${red}` });
+      setPasswordBorder({ border: `solid ${red}` });
+      return;
+    }
+    if (!email) {
+      setError("email field cannot be empty");
+      setEmailBorder({ border: `solid ${red}` });
+      return;
+    }
+    if (!password) {
+      setError("password field cannot be empty");
+      setPasswordBorder({ border: `solid ${red}` });
+      return;
+    }
     await login(email, password);
-    console.log(error);
   }
 
   return (
@@ -27,6 +53,7 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
             id="email"
             className="form__input"
+            style={emailBorder}
           />
         </div>
         <div className="form__field">
@@ -39,6 +66,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             id="password"
             className="form__input"
+            style={passwordBorder}
           />
         </div>
         <button
@@ -49,8 +77,12 @@ function Login() {
         >
           Login
         </button>
+
         <Link to="/register">
-          <p className="form__footer">Create new account</p>
+          <div className="form__footer">
+            <p>Create new account</p>
+            {error && <div className="form__error">{error}</div>}
+          </div>
         </Link>
       </form>
     </main>

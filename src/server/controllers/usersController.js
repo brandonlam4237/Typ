@@ -34,13 +34,22 @@ exports.addUser = asyncHandler(async (req, res, next) => {
     const found_username = await Users.findOne({
         where: { username: username },
     });
+
     const found_email = await Users.findOne({ where: { email: email } });
-    if (found_username != null || found_email != null) {
+    if (found_username != null) {
         return res.status(400).json({
             status: "Error",
-            message: "Username or Email already in use",
+            message: "Username already in use",
         });
     }
+
+    if (found_email != null) {
+        return res.status(400).json({
+            status: "Error",
+            message: "Email already in use",
+        });
+    }
+
     // Username and email are available
     else {
         //Encrypt password

@@ -6,12 +6,14 @@ import { useLogin } from "../hooks/useLogin";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, error, isLoading } = useLogin();
+  const { login, error } = useLogin();
 
   async function handleLogin(e: any) {
     e.preventDefault();
     await login(email, password);
-    console.log(error);
+    if (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -49,9 +51,11 @@ function Login() {
         >
           Login
         </button>
+
         <Link to="/register">
           <p className="form__footer">Create new account</p>
         </Link>
+        {error && <div className="form__error">{error}</div>}
       </form>
     </main>
   );

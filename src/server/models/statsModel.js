@@ -12,6 +12,10 @@ const Stats = sequelize.define("Stats", {
       primaryKey: true,
       autoIncrement: true,
     },
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     wpm_pb_15_time:{
         type: DataTypes.INTEGER,
         allownull: false

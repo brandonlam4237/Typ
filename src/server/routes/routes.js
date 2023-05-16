@@ -21,8 +21,11 @@ router.get("/users/:id", users_controller.verifyToken, users_controller.getUserB
 router.get("/stats", stats_controller.getAllStats);
 router.get("/stats/:id",stats_controller.getStatsByUserID);
 
+
+
 //PUT
-router.put("/stats/:id", stats_controller.updateUserStat);
+//router.put("/stats/:id", stats_controller.updateUserStat);
+router.put("/stats/:id",users_controller.verifyToken,stats_controller.updateUserStats);
 
 //POST for users
 router.post("/users", users_controller.addUser);  

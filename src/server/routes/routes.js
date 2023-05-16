@@ -15,7 +15,7 @@ router.get("/phrases/:id", phrase_controller.getPhraseByID);
 
 //GET Endpoints for users.
 router.get("/users",users_controller.verifyToken,users_controller.getAllUsers); // This enpoints also contains stats so it needs to be protected
-router.get("/users/:id", users_controller.verifyTokenUserSpecific, users_controller.getUserByID); 
+router.get("/users/:id", users_controller.verifyToken, users_controller.getUserByID); 
 
 //GET Endpoints for stats.
 router.get("/stats", stats_controller.getAllStats);

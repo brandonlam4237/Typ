@@ -5,9 +5,9 @@ import { useLogout } from "../hooks/useLogout";
 import { useUserContext } from "../hooks/useUserContext";
 
 function Stats() {
-  const [joinDate, setJoinDate] = useState("26 Apr 2023");
-  const [totalTests, setTotalTests] = useState(13);
-  const [timeTyping, setTimeTyping] = useState(1575);
+  //const [joinDate, setJoinDate] = useState("26 Apr 2023");
+  const [totalTests, setTotalTests] = useState(0);
+  const [timeTyping, setTimeTyping] = useState(0);
 
   const [time15wpm, setTime15wpm] = useState(0);
   const [time15acc, setTime15acc] = useState(0);
@@ -42,6 +42,7 @@ function Stats() {
       }
     );
     const json = await res.json();
+
     setWords10wpm(json.wpm_pb_10_words);
     setWords25wpm(json.wpm_pb_25_words);
     setWords50wpm(json.wpm_pb_50_words);
@@ -55,6 +56,9 @@ function Stats() {
     setTime15acc(json.acc_pb_15_time);
     setTime30acc(json.acc_pb_30_time);
     setTime60acc(json.acc_pb_60_time);
+
+    setTotalTests(json.total_games);
+    setTimeTyping(json.total_time);
   }
 
   function formatDate() {
@@ -86,7 +90,9 @@ function Stats() {
     seconds -= hours * 3600;
     let minutes = Math.floor(seconds / 60);
     seconds -= minutes * 60;
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours < 10 ? `0${hours}` : hours}:${
+      minutes < 10 ? `0${minutes}` : minutes
+    }:${seconds < 10 ? `0${seconds}` : seconds}`;
   }
 
   return (

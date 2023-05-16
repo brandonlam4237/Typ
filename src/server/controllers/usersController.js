@@ -43,7 +43,7 @@ exports.addUser = asyncHandler(async (req, res, next) => {
         where: { username: username },
     });
 
-    const found_email = await Users.findOne({ where: { email: email } });
+    const found_email = await Users.findOne({ where: { email: email } });   
     if (found_username != null) {
         return res.status(400).json({
             status: "Error",
@@ -73,7 +73,8 @@ exports.addUser = asyncHandler(async (req, res, next) => {
             role: 'basic'
         });
         console.log(`User created with user id: ${newUser.user_id}`);
-        stats = stats_controller.initStats(newUser.user_id);
+        console.log(newUser)
+        stats = stats_controller.initStats(newUser.user_id, newUser.username);
         console.log("Stats initiated");
         console.log(stats);
         return res

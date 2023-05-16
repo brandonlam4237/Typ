@@ -45,9 +45,6 @@ exports.updateUserStats = asyncHandler(async (req,res,next)=>{
       prev_wpm = wpm
       prev_acc = acc
     }
-    
-
-
     try{
       await Stats.update({
           [type_wpm]: prev_wpm,
@@ -77,9 +74,10 @@ exports.updateUserStat = asyncHandler(async (req,res, next)=>{
     return res.status(200).json({"status":"success"});
 });
 
-exports.initStats = asyncHandler(async (user_id)=>{
+exports.initStats = asyncHandler(async (user_id, username)=>{
   const newStats = await Stats.create({
     user_id: user_id,
+    username: username,
     wpm_pb_15_time:0,
     wpm_pb_30_time:0,
     wpm_pb_60_time:0,

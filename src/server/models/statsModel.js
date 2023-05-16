@@ -59,7 +59,16 @@ const Stats = sequelize.define("Stats", {
     acc_pb_50_words:{
         type: DataTypes.INTEGER,
         allownull: false
+    },
+    total_time:{
+        type: DataTypes.INTEGER,
+        allownull: false
+    },
+    total_games:{
+        type: DataTypes.INTEGER,
+        allownull: false
     }
+    
         
   }, {
     tableName: "stats", 

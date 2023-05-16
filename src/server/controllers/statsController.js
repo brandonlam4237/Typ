@@ -47,7 +47,10 @@ exports.initStats = asyncHandler(async (user_id)=>{
     acc_pb_60_time:0,
     acc_pb_10_words:0,
     acc_pb_25_words:0,
-    acc_pb_50_words:0
+    acc_pb_50_words:0,
+    total_time: 0,
+    total_games: 0
+
   })
   return newStats;
 })

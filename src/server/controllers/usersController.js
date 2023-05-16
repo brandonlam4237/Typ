@@ -20,7 +20,7 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
 });
 
 exports.addUser = asyncHandler(async (req, res, next) => {
-    const { username, password, email, creationdate } = req.body;
+    const { username, password, email} = req.body;
 
     // Form Validation
     if (!username || !email || !password) {
@@ -62,6 +62,7 @@ exports.addUser = asyncHandler(async (req, res, next) => {
             password: encryptedPW,
             email: email,
             creationdate: date,
+            role: 'basic'
         });
         console.log(`User created with user id: ${newUser.user_id}`);
         stats = stats_controller.initStats(newUser.user_id);

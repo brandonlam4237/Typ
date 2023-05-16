@@ -33,60 +33,38 @@ function Results(props: resultsProps) {
   const { user } = useUserContext();
 
   useEffect(() => {
-    updateWpm();
+    if (user) updateStats();
   }, []);
 
-  async function updateWpm() {
+  async function updateStats() {
     if (wordsSelected) {
-      const wpm_res = await fetch(
-        "http://localhost:3000/api/stats/" + user.user.user_id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            stat_type: `wpm_pb_${wordAmount}_words`,
-            stat_val: Math.floor((wordsCorrect / endTime) * 60),
-          }),
-        }
-      );
-      const acc_res = await fetch(
-        "http://localhost:3000/api/stats/" + user.user.user_id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            stat_type: `acc_pb_${wordAmount}_words`,
-            stat_val: Math.floor(
-              ((letterCount - mistakes) / letterCount) * 100
-            ),
-          }),
-        }
-      );
+      await fetch("http://localhost:3000/api/stats/" + user.user.user_id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authToken}`,
+        },
+        body: JSON.stringify({
+          test_type: `words_${wordAmount}`,
+          wpm: Math.floor((wordsCorrect / endTime) * 60),
+          acc: Math.floor(((letterCount - mistakes) / letterCount) * 100),
+          total_time: endTime,
+        }),
+      });
     } else if (timeSelected) {
-      const wpm_res = await fetch(
-        "http://localhost:3000/api/stats/" + user.user.user_id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            stat_type: `wpm_pb_${timeAmount}_time`,
-            stat_val: Math.floor((wordsCorrect / timeAmount) * 60),
-          }),
-        }
-      );
-      const acc_res = await fetch(
-        "http://localhost:3000/api/stats/" + user.user.user_id,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            stat_type: `acc_pb_${timeAmount}_time`,
-            stat_val: Math.floor(
-              ((letterCount - mistakes) / letterCount) * 100
-            ),
-          }),
-        }
-      );
+      await fetch("http://localhost:3000/api/stats/" + user.user.user_id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.authToken}`,
+        },
+        body: JSON.stringify({
+          test_type: `time_${timeAmount}`,
+          wpm: Math.floor((wordsCorrect / timeAmount) * 60),
+          acc: Math.floor(((letterCount - mistakes) / letterCount) * 100),
+          total_time: timeAmount,
+        }),
+      });
     }
   }
 

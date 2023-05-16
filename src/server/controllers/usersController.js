@@ -12,9 +12,17 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 
 exports.getUserByID = asyncHandler(async (req, res, next) => {
     const id = parseInt(req.params.id);
+    console.log(id);
+    console.log(req.user.user_id);
+    if (id !== req.user.user_id) {
+        return res.status(403).json({
+          status: 'Error',
+          message: 'Forbidden from getUserByid',
+        });
+    }    
     const user = await Users.findByPk(id);
     if (user == null) {
-        res.send("User not found or does not exist");
+        res.status(404).send("User not found or does not exist");
     }
     return res.status(200).json(user);
 });
@@ -78,34 +86,6 @@ exports.addUser = asyncHandler(async (req, res, next) => {
     }
 });
 
-/*
-exports.authUser = asyncHandler(async (req, res, next) => {
-    const user = await Users.findOne({ where: { email: req.body.email } });
-    if (!user) {
-        console.log("Err Invalid Login");
-        return res.status(400).json({
-            status: "Error",
-            message: "Invalid Email or Password",
-        });
-    } else {
-        try {
-            if (await bcrypt.compare(req.body.password, user.password)) {
-                jwt.sign({ user }, "random", (err, authToken) => {
-                    res.json({
-                        status: "success",
-                        authToken: authToken,
-                        user,
-                    });
-                });
-            } else {
-                res.json({ status: "failed with incorrect password" });
-            }
-        } catch {
-            res.status(400).send("Login Failed");
-        }
-    }
-});
-*/
 
 exports.authUser = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
@@ -128,11 +108,12 @@ exports.authUser = asyncHandler(async (req, res, next) => {
         });
     } else {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            jwt.sign({ user }, "random", (err, authToken) => {
+            jwt.sign({ user:user }, "random", (err, authToken) => {
                 res.json({
                     status: "successful login",
                     authToken: authToken,
-                    user,
+                    user:user,
+
                 });
             });
         } else {
@@ -149,28 +130,25 @@ exports.verifyToken = function (req, res, next) {
     //console.log(req)
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (token == null) return res.sendStatus(401);
+    if (!token) {
+        return res.status(401).json({
+          status: 'Error',
+          message: 'Unauthorized',
+        });
+      }
 
-    jwt.verify(token, "random", (err, user) => {
-        if (err) return res.sendStatus(403);
-        //console.log(user['user']['user_id'])
-        req.user = user;
+      try {
+        // Verify the token
+        const decodedToken = jwt.verify(token, 'random');
+        // Store the user ID from the token in the request object
+        req.user = decodedToken.user;
+    
         next();
-    });
+      } catch (error) {
+        return res.status(403).json({
+          status: 'Error',
+          message: 'Forbidden from verify',
+        });
+      }
 };
-exports.verifyTokenUserSpecific = function (req, res, next) {
-    const authHeader = req.headers["authorization"];
-    //console.log(req)
-    const token = authHeader && authHeader.split(" ")[1];
 
-    if (token == null) return res.sendStatus(401);
-
-    const id = parseInt(req.params.id);
-
-    jwt.verify(token, "random", (err, user) => {
-        if (err || user["user"]["user_id"] != id) return res.sendStatus(403);
-
-        req.user = user;
-        next();
-    });
-};

@@ -28,6 +28,10 @@ const Users = sequelize.define("Users", {
   },
   creationdate:{
     type: DataTypes.DATE
+  },
+  role:{
+    type: DataTypes.STRING,
+    allowNull: false
   }
 
 }, {

@@ -6,6 +6,13 @@ const stats_controller = require("../controllers/statsController");
 
 //this get's all phrases from our model and returns as json.
 exports.getAllUsers = asyncHandler(async (req, res, next) => {
+    const role = req.user.role;
+    if (role ==='basic'){
+        return res.status(403).json({
+            status:'Error',
+            message: 'Forbidden, not an Admin'
+        });
+    }
     const users = await Users.findAll();
     return res.status(200).json(users);
 });
@@ -14,10 +21,10 @@ exports.getUserByID = asyncHandler(async (req, res, next) => {
     const id = parseInt(req.params.id);
     console.log(id);
     console.log(req.user.user_id);
-    if (id !== req.user.user_id) {
+    if (id !== req.user.user_id && req.user.role==='basic') {
         return res.status(403).json({
           status: 'Error',
-          message: 'Forbidden from getUserByid',
+          message: `Forbidden, not user ${id}`,
         });
     }    
     const user = await Users.findByPk(id);
@@ -70,7 +77,7 @@ exports.addUser = asyncHandler(async (req, res, next) => {
             password: encryptedPW,
             email: email,
             creationdate: date,
-            role: 'basic'
+            role: 'admin'
         });
         console.log(`User created with user id: ${newUser.user_id}`);
         console.log(newUser)

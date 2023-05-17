@@ -12,21 +12,26 @@
   }
 
   &__board {
-    height: 22rem;
+    height: 23rem;
     width: 30rem;
     border-radius: 10px;
     background-color: $dark-gray;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+
+  &__stats {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    padding: 3rem;
   }
 
   &__row {
     display: flex;
     justify-content: space-between;
-
+    //font-weight: bold;
     font-size: 1.2rem;
   }
 
@@ -38,5 +43,32 @@
   &__text-next {
     display: flex;
     gap: 0.25rem;
+  }
+
+  .wpm {
+    color: $light-gray;
+  }
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__arrow {
+    height: 1rem;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $red;
+    padding: 0.5rem;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
   }
 }

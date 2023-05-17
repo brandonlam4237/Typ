@@ -1,6 +1,8 @@
 import SettingsBar from "../components/SettingsBar";
 import { useEffect, useState } from "react";
 import "../scss/leaderboard.scss";
+import arrow_left from "../assets/arrow-left.png";
+import arrow_right from "../assets/arrow-right.png";
 
 function Leaderboard() {
   const [timeSelected, setTimeSelected] = useState(true);
@@ -29,7 +31,7 @@ function Leaderboard() {
     }
     arr.sort((a: any, b: any) => b[1] - a[1]);
     console.log(arr);
-    setLeaderStats(arr.slice(0, 8));
+    setLeaderStats(arr);
   }
 
   return (
@@ -47,21 +49,33 @@ function Leaderboard() {
         gameInProgress={false}
       />
       <div className="leaderboard__board">
-        {leaderStats.length &&
-          leaderStats.map((ele, i) => {
-            return (
-              <div className="leaderboard__row" key={i}>
-                <div className="leaderboard__text-next">
-                  <p className="leaderboard__number">{i + 1}.</p>
-                  <p>{ele[0]}</p>
+        <div className="leaderboard__stats">
+          {leaderStats.length &&
+            leaderStats.map((ele, i) => {
+              if (i + 1 > 7) return <></>;
+              return (
+                <div className="leaderboard__row" key={i}>
+                  <div className="leaderboard__text-next">
+                    <p className="leaderboard__number">{i + 1}.</p>
+                    <p>{ele[0]}</p>
+                  </div>
+                  <div className="leaderboard__text-next">
+                    <p className="leaderboard__number">{ele[1]}</p>
+                    <p className="wpm">wpm</p>
+                  </div>
                 </div>
-                <div className="leaderboard__text-next">
-                  <p className="leaderboard__number">{ele[1]}</p>
-                  <p>wpm</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
+        <div className="arrows">
+          <span className="arrows__box">
+            <img src={arrow_left} className="arrows__arrow" />
+          </span>
+          <p>Page 1</p>
+          <span className="arrows__box">
+            <img src={arrow_right} className="arrows__arrow" />
+          </span>
+        </div>
       </div>
     </main>
   );

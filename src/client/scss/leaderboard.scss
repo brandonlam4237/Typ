@@ -4,7 +4,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  @media (max-height: 700px) {
+    height: calc(100vh - 14rem);
+  }
+
+  @media (min-height: 700px) {
+    height: calc(100vh - 17rem);
+  }
 
   &__title {
     font-weight: bold;
@@ -12,7 +20,7 @@
   }
 
   &__board {
-    height: 23rem;
+    height: 20rem;
     width: 30rem;
     border-radius: 10px;
     background-color: $dark-gray;
@@ -45,6 +53,10 @@
   .wpm {
     color: $light-gray;
   }
+
+  .hidden {
+    display: none;
+  }
 }
 
 .arrows {
@@ -55,11 +67,14 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: -2.75rem;
+  transform: translate(-50%, 50%);
 
   &__arrow {
     height: 1rem;
+  }
+
+  &__page {
+    font-weight: bold;
   }
 
   &__box {

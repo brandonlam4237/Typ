@@ -19,10 +19,8 @@ function Leaderboard() {
   async function fetchLeaderboard() {
     const res = await fetch("http://localhost:3000/api/stats");
     const json = await res.json();
-    console.log(json);
     const arr: any = [];
     for (let user of json) {
-      console.log(user);
       if (timeSelected) {
         arr.push([`${user.username}`, user[`wpm_pb_${timeAmount}_time`]]);
       }
@@ -31,7 +29,6 @@ function Leaderboard() {
       }
     }
     arr.sort((a: any, b: any) => b[1] - a[1]);
-    console.log(arr);
     setLeaderStats(arr);
   }
 
@@ -54,7 +51,7 @@ function Leaderboard() {
           {leaderStats.length &&
             leaderStats.map((ele, i) => {
               if (i + 1 > pageNumber * 7 || i + 1 < (pageNumber - 1) * 7)
-                return <></>;
+                return <div key={i} className="hidden"></div>;
               return (
                 <div className="leaderboard__row" key={i}>
                   <div className="leaderboard__text-next">
@@ -78,7 +75,7 @@ function Leaderboard() {
           >
             <img src={arrow_left} className="arrows__arrow" />
           </span>
-          <p>Page {pageNumber}</p>
+          <p className="arrows__page">page {pageNumber}</p>
           <span
             className="arrows__box"
             onClick={() => {

@@ -85,6 +85,7 @@ function Register() {
   return (
     <main className="register">
       <form className="form">
+        <h1 className="form__title">Register</h1>
         <div className="form__field">
           <label className="form__label" htmlFor="username">
             username

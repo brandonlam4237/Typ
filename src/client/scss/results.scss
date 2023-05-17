@@ -7,6 +7,9 @@
   width: 100%;
   max-width: 80rem;
   height: calc(100vh - 12rem);
+  @media (max-height: 600px) {
+    height: auto;
+  }
   .container {
     background-color: $dark-gray;
     padding: 2rem;

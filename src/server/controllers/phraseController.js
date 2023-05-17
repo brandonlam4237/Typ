@@ -74,6 +74,12 @@ exports.getRandomPhrase = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteAllPhrases = asyncHandler(async (req, res, next) => {
+  if(req.user.role === 'basic'){
+    return res.status(403).json({
+      status:'Error',
+      message: 'Forbidden, not an Admin'
+  });
+  }
   await Phrase.destroy({ where: {} });
   const phrases = await Phrase.findAll();
   return res.type("json").send(JSON.stringify(phrases, null, 2) + "\n");

@@ -69,7 +69,7 @@ function Leaderboard() {
               );
             })}
         </div>
-        <div className="arrows">
+        <footer className="arrows">
           <span
             className="arrows__box"
             onClick={() => {
@@ -89,7 +89,7 @@ function Leaderboard() {
           >
             <img src={arrow_right} className="arrows__arrow" />
           </span>
-        </div>
+        </footer>
       </div>
     </main>
   );

@@ -29,7 +29,7 @@ function Leaderboard() {
     }
     arr.sort((a: any, b: any) => b[1] - a[1]);
     console.log(arr);
-    setLeaderStats(arr.slice(0, 10));
+    setLeaderStats(arr.slice(0, 8));
   }
 
   return (
@@ -50,9 +50,15 @@ function Leaderboard() {
         {leaderStats.length &&
           leaderStats.map((ele, i) => {
             return (
-              <div className="leaderboard__board-row" key={i}>
-                <p>{ele[0]}</p>
-                <p>{ele[1]}</p>
+              <div className="leaderboard__row" key={i}>
+                <div className="leaderboard__text-next">
+                  <p className="leaderboard__number">{i + 1}.</p>
+                  <p>{ele[0]}</p>
+                </div>
+                <div className="leaderboard__text-next">
+                  <p className="leaderboard__number">{ele[1]}</p>
+                  <p>wpm</p>
+                </div>
               </div>
             );
           })}

@@ -12,14 +12,31 @@
   }
 
   &__board {
-    height: 20rem;
+    height: 22rem;
     width: 30rem;
     border-radius: 10px;
     background-color: $dark-gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 3rem;
   }
 
-  &__board-row {
+  &__row {
     display: flex;
     justify-content: space-between;
+
+    font-size: 1.2rem;
+  }
+
+  &__number {
+    color: $red;
+    font-weight: bold;
+  }
+
+  &__text-next {
+    display: flex;
+    gap: 0.25rem;
   }
 }

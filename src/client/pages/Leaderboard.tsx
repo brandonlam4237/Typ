@@ -29,6 +29,7 @@ function Leaderboard() {
       }
     }
     arr.sort((a: any, b: any) => b[1] - a[1]);
+    setPageNumber(1);
     setLeaderStats(arr);
   }
 
@@ -50,7 +51,7 @@ function Leaderboard() {
         <div className="leaderboard__stats">
           {leaderStats.length &&
             leaderStats.map((ele, i) => {
-              if (i + 1 > pageNumber * 7 || i + 1 < (pageNumber - 1) * 7)
+              if (i + 1 > pageNumber * 7 || i + 1 < (pageNumber - 1) * 7 + 1)
                 return <div key={i} className="hidden"></div>;
               return (
                 <div className="leaderboard__row" key={i}>

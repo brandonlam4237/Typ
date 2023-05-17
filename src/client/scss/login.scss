@@ -7,6 +7,9 @@
     align-items: center;
     justify-content: center;
     height: calc(100vh - 15rem);
+    @media (max-height: 575px) {
+      height: auto;
+    }
     @media (min-height: 700px) {
       height: calc(100vh - 17rem);
     }

@@ -9,6 +9,9 @@
 
   .game {
     height: calc(100vh - 12rem);
+    @media (max-height: 425px) {
+      height: auto;
+    }
     @media (min-height: 750px) {
       height: calc(100vh - 20rem);
     }

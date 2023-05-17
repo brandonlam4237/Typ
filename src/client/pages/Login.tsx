@@ -57,6 +57,7 @@ function Login() {
   return (
     <main className="login">
       <form className="form">
+        <h1 className="form__title">Login</h1>
         <div className="form__field">
           <label className="form__label" htmlFor="email">
             email

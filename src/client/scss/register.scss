@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    @media (min-height: 600px) {
+    @media (max-height: 700px) {
       height: calc(100vh - 14rem);
     }
 
@@ -14,6 +14,10 @@
       height: calc(100vh - 17rem);
     }
     gap: 1rem;
+
+    &__title {
+      margin-bottom: 1rem;
+    }
 
     &__label {
       color: $light-gray;

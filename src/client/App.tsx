@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { useUserContext } from "./hooks/useUserContext";
 import Stats from "./pages/Stats";
+import Leaderboard from "./pages/Leaderboard";
 
 function App() {
   const { user } = useUserContext();
@@ -27,6 +28,7 @@ function App() {
             path="/stats"
             element={user ? <Stats /> : <Navigate to="/login" />}
           />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -10,6 +10,7 @@ function Leaderboard() {
   const [timeAmount, setTimeAmount] = useState(15);
   const [wordAmount, setWordAmount] = useState(10);
   const [leaderStats, setLeaderStats] = useState<any[]>([]);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     fetchLeaderboard();
@@ -52,7 +53,8 @@ function Leaderboard() {
         <div className="leaderboard__stats">
           {leaderStats.length &&
             leaderStats.map((ele, i) => {
-              if (i + 1 > 7) return <></>;
+              if (i + 1 > pageNumber * 7 || i + 1 < (pageNumber - 1) * 7)
+                return <></>;
               return (
                 <div className="leaderboard__row" key={i}>
                   <div className="leaderboard__text-next">
@@ -68,11 +70,23 @@ function Leaderboard() {
             })}
         </div>
         <div className="arrows">
-          <span className="arrows__box">
+          <span
+            className="arrows__box"
+            onClick={() => {
+              if (pageNumber > 1) setPageNumber(pageNumber - 1);
+            }}
+          >
             <img src={arrow_left} className="arrows__arrow" />
           </span>
-          <p>Page 1</p>
-          <span className="arrows__box">
+          <p>Page {pageNumber}</p>
+          <span
+            className="arrows__box"
+            onClick={() => {
+              if (pageNumber * 7 < leaderStats.length) {
+                setPageNumber(pageNumber + 1);
+              }
+            }}
+          >
             <img src={arrow_right} className="arrows__arrow" />
           </span>
         </div>

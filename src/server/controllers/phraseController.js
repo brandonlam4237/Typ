@@ -72,7 +72,18 @@ exports.getRandomPhrase = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json(rand_phrase);
 });
+exports.deletePhraseByID = asyncHandler(async(req,res,next)=>{
+  id = parseInt(req.params.id);
+  if(req.user.role === 'basic'){
+    return res.status(403).json({
+      status:'Error',
+      message: 'Forbidden, not an Admin'
+    });
+  }
+  await Phrase.destroy({where: {phrase_id: id}});
+  return res.status(200).send(`Phrase ${id} has been deleted`)
 
+})
 exports.deleteAllPhrases = asyncHandler(async (req, res, next) => {
   if(req.user.role === 'basic'){
     return res.status(403).json({
